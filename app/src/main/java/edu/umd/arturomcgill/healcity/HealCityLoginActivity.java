@@ -29,6 +29,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -310,6 +313,9 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
 
             try {
                 // Simulate network access.
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference();
+                // PUSHES TO DB myRef.child("users").child(this.mEmail).setValue("test!!!");
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
                 return false;
