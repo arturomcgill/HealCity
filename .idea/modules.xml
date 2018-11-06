@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/HealCity.iml" filepath="$PROJECT_DIR$/HealCity.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/circleprogressbar/circleprogressbar.iml" filepath="$PROJECT_DIR$/circleprogressbar/circleprogressbar.iml" />
     </modules>
   </component>
 </project>
