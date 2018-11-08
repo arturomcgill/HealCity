@@ -1,30 +1,36 @@
 package edu.umd.arturomcgill.healcity;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import android.animation.ValueAnimator;
-
-// -------------------
-
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.opencsv.CSVWriter;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class HealCityMainActivity extends AppCompatActivity implements SensorEventListener {
+import static android.content.Context.SENSOR_SERVICE;
 
-    private CircleProgressBar mCustomProgressBar;
+// -------------------
+
+public class HomeFragment extends Fragment implements SensorEventListener{
+    private CircleProgressBar mCustomProgressBar5;
 
 
     private SensorManager sensorManager;
@@ -45,25 +51,62 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
     private long streakStartTime;
     private long streakPrevTime;
 
+    public static final String TAG = HomeFragment.class.getSimpleName();
+
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COLOR = "color";
+
+    // TODO: Rename and change types of parameters
+    private int color;
+
+    private RecyclerView recyclerView;
+
+    public HomeFragment() {
+        // Required empty public constructor
+    }
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        if (getArguments() != null) {
+            color = getArguments().getInt(ARG_COLOR);
+        }
+
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+//        View rootView = inflater.inflate(R.layout.fragment_square, container, false);
+//
+//        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_square_recycler);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+//        recyclerView.setBackgroundColor(getLighterColor(color));
+//
+//        HomeAdapter adapter = new HomeAdapter(getContext());
+//        recyclerView.setAdapter(adapter);
+
+        View rootView = inflater.inflate(R.layout.home, container, false);
 
         // Progress Circle
-        mCustomProgressBar = (CircleProgressBar) findViewById(R.id.custom_progress5);
+        mCustomProgressBar5 = (CircleProgressBar) rootView.findViewById(R.id.custom_progress5);
 
-        mCustomProgressBar.setProgressFormatter(new CircleProgressBar.ProgressFormatter() {
+        mCustomProgressBar5.setProgressFormatter(new CircleProgressBar.ProgressFormatter() {
             @Override
             public CharSequence format(int progress, int max) {
                 return progress + "%";
             }
         });
 
-        // Total Steps
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        stepView = findViewById(R.id.count);
-        path =  this.getExternalFilesDir(null);
+
+        //recyclerView = (RecyclerView) rootView.findViewById(R.id.count);
+        stepView = rootView.findViewById(R.id.count);
+        sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        //stepView = findViewById(R.id.count);
+        path =  getActivity().getExternalFilesDir(null);
         file = new File(path, "raghu1.csv");
         try {
             csvWriter = new CSVWriter(new FileWriter(file));
@@ -72,8 +115,9 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
         }
 
         streakPrevTime = System.currentTimeMillis() - 500;
-    }
 
+        return rootView;
+    }
 
     private void simulateProgress() {
         ValueAnimator animator = ValueAnimator.ofInt(0, 54);
@@ -82,24 +126,22 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 int progress = (int) animation.getAnimatedValue();
-                mCustomProgressBar.setProgress(progress);
+                mCustomProgressBar5.setProgress(progress);
             }
         });
 
         //animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setDuration(4000);
+        animator.setDuration(2000);
         animator.start();
     }
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
 
         // Progress Circle
+        mCustomProgressBar5.setProgress(54);
         simulateProgress();
-        mCustomProgressBar.setProgress(54);
-        Log.e("PROGRESS===============", String.valueOf(mCustomProgressBar.getProgress()));
-        Log.e("STEPS===============", String.valueOf(stepCount));
 
         // Total Steps
         sensorManager.registerListener(this,
@@ -110,7 +152,7 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         try {
             csvWriter.close();
@@ -119,9 +161,8 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
         }
     }
 
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getActivity().getMenuInflater().inflate(R.menu.menu_main, menu);
         this.menu = menu;
         return true;
     }
@@ -193,4 +234,29 @@ public class HealCityMainActivity extends AppCompatActivity implements SensorEve
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+
+
+    /**
+     * Updates {@link RecyclerView} background color upon changing Bottom Navigation item.
+     *
+     * @param color to apply to {@link RecyclerView} background.
+     */
+    public void updateColor(int color) {
+        recyclerView.setBackgroundColor(getLighterColor(color));
+    }
+
+    /**
+     * Facade to return colors at 30% opacity.
+     *
+     * @param color
+     * @return
+     */
+    private int getLighterColor(int color) {
+        return Color.argb(30,
+                Color.red(color),
+                Color.green(color),
+                Color.blue(color)
+        );
+    }
+
 }
