@@ -21,7 +21,7 @@ public class Event {
         return description;
     }
 
-    public String getTime() { return time; }
-
-    
+    public String getTime() { 
+        return time; 
+    }
 }
