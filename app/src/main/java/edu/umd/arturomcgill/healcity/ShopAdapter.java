@@ -13,51 +13,61 @@ import java.util.List;
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> {
 
     //  Data
-    private List<String> list = new ArrayList<>();
+    private List<ShopItem> shopItems = new ArrayList<>();
 
     private Context context;
 
     public ShopAdapter(Context context) {
         this.context = context;
-        prepareRandom();
+        getShopItems();
     }
 
-    private void prepareRandom() {
-        String[] nameArray = context.getResources().getStringArray(R.array.dessert_names);
+    private void getShopItems() {
 
-        final int SIZE = nameArray.length;
+        //Real shop items will come from DB
 
-        for (int i = 0; i < SIZE; i++) {
-            list.add("Item " + i);
+        for (int i = 0; i < 10; i++) {
+            shopItems.add(new ShopItem("Item " + i, i*10, "cool discount or something"));
         }
     }
 
     @Override
     public SimpleItemVH onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_simplevh, parent, false);
+                .inflate(R.layout.shop_item_vh, parent, false);
 
         return new SimpleItemVH(v);
     }
 
     @Override
     public void onBindViewHolder(SimpleItemVH holder, int position) {
-        String s = list.get(position);
-        holder.txtTitle.setText(s);
+        ShopItem shopItem = shopItems.get(position);
+
+        holder.item = shopItem;
+
+        holder.name.setText(shopItem.getName());
+        holder.cost.setText("Cost: " + shopItem.getCost());
+        holder.description.setText(shopItem.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return shopItems != null ? shopItems.size() : 0;
     }
 
     protected static class SimpleItemVH extends RecyclerView.ViewHolder {
-        TextView txtTitle;
+        ShopItem item;
+
+        TextView name;
+        TextView cost;
+        TextView description;
 
         public SimpleItemVH(View itemView) {
             super(itemView);
 
-            txtTitle = (TextView) itemView.findViewById(R.id.item_simplevh_txttitle);
+            name = (TextView) itemView.findViewById(R.id.shop_item_name);
+            cost = (TextView) itemView.findViewById(R.id.shop_item_cost);
+            description = (TextView) itemView.findViewById(R.id.shop_item_description);
         }
     }
 }

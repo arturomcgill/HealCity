@@ -1,7 +1,11 @@
 package edu.umd.arturomcgill.healcity;
 
+import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,54 +14,86 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static edu.umd.arturomcgill.healcity.FriendsFragment.TAG;
+
 public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleItemVH> {
 
     //  Data
-    private List<String> list = new ArrayList<>();
+
+    private List<Friend> friends = new ArrayList<>();
 
     private Context context;
+    private  FragmentManager fragmentManager;
 
-    public FriendsAdapter(Context context) {
+    public FriendsAdapter(Context context, FragmentManager fragmentManager) {
         this.context = context;
-        prepareRandom();
+        this.fragmentManager = fragmentManager;
+        getFriendsData();
     }
 
-    private void prepareRandom() {
-        String[] nameArray = context.getResources().getStringArray(R.array.dessert_names);
+    private void getFriendsData() {
+        //Get friends from DB. For now, from array.
 
-        final int SIZE = nameArray.length;
-
-        for (int i = 0; i < SIZE; i++) {
-            list.add("Friend " + i);
+        for (int i = 0; i < 10; i++) {
+            friends.add(new Friend("Steve", i, i*100));
         }
     }
 
     @Override
     public SimpleItemVH onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_simplevh, parent, false);
+                .inflate(R.layout.friend_vh, parent, false);
 
-        return new SimpleItemVH(v);
+
+        return new SimpleItemVH(v, fragmentManager);
     }
 
     @Override
     public void onBindViewHolder(SimpleItemVH holder, int position) {
-        String s = list.get(position);
-        holder.txtTitle.setText(s);
+        Friend f = friends.get(position);
+
+        holder.friendLevel.setText("Level " + f.getLevel());
+        holder.friendName.setText(f.getName());
+        holder.friend = f;
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return friends != null ? friends.size() : 0;
     }
 
     protected static class SimpleItemVH extends RecyclerView.ViewHolder {
-        TextView txtTitle;
+        Friend friend;
+        TextView friendName;
+        TextView friendLevel;
 
-        public SimpleItemVH(View itemView) {
+        public SimpleItemVH(View itemView, final FragmentManager fragmentManager) {
             super(itemView);
 
-            txtTitle = (TextView) itemView.findViewById(R.id.item_simplevh_txttitle);
+            friendName = (TextView) itemView.findViewById(R.id.friend_name);
+            friendLevel = (TextView) itemView.findViewById(R.id.friend_level);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    DialogFragment friendProfile = new FriendsProfileModal();
+                    Bundle friendInfo = new Bundle();
+
+                    String nameString = friendName.getText().toString();
+                    String levelString = friendLevel.getText().toString();
+
+                    friendInfo.putString("name", nameString);
+                    //Just need name (or id) to do query of DB
+                    // TODO: OR send Friend object to fragment
+                    friendInfo.putInt("level", Character.getNumericValue(levelString.charAt(levelString.length() - 1)));
+                    friendProfile.setArguments(friendInfo);
+
+                    friendProfile.show(fragmentManager, "friend");
+                }
+            });
+
         }
+
+
     }
 }
