@@ -17,8 +17,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Button;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -101,6 +103,15 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             }
         });
 
+        //TEMPORARY logout button
+        Button mLogoutButton = (Button) rootView.findViewById(R.id.logout_button);
+        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+            }
+        });
 
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.count);
         stepView = rootView.findViewById(R.id.count);

@@ -35,7 +35,9 @@ public class MainActivity extends AppCompatActivity {
     private boolean notificationVisible = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        HealCityLoginActivity.hcla.finish();
 
         // Navbar
         AppCompatDelegate.setDefaultNightMode(
