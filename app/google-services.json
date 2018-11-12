@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "653464762755",
+    "firebase_url": "https://healcity-fff4d.firebaseio.com",
+    "project_id": "healcity-fff4d",
+    "storage_bucket": "healcity-fff4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:653464762755:android:94f8195087ad67fb",
+        "android_client_info": {
+          "package_name": "edu.umd.arturomcgill.healcity"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "653464762755-jqqj481tibmhg80e4l37djarv5de549n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.umd.arturomcgill.healcity",
+            "certificate_hash": "fc687477fa52d2e10e193ed6d079c7903e683e85"
+          }
+        },
+        {
+          "client_id": "653464762755-ig9utojr2pr652iictei6kjeua2sa19t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfGHOMNsgcsZ8Yf6i439nMZAWPXH9lJtM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "653464762755-ig9utojr2pr652iictei6kjeua2sa19t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
