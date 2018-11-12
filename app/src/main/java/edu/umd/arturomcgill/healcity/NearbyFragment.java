@@ -1,6 +1,5 @@
 package edu.umd.arturomcgill.healcity;
 
-
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,12 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import java.text.SimpleDateFormat;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,7 +37,6 @@ public class NearbyFragment extends Fragment {
     public NearbyFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -75,15 +73,12 @@ public class NearbyFragment extends Fragment {
                 Log.e(TAG, "MalformedURLException");
             } catch (IOException e) {
                 Log.e(TAG, "IOException");
-
             } finally {
                 if (httpURLConnection != null) {
                     httpURLConnection.disconnect();
                 }
             }
-
             return parseJSON(jsonResponse);
-
         }
 
 
@@ -107,7 +102,6 @@ public class NearbyFragment extends Fragment {
                     }
                 }
             }
-
             return data.toString();
         }
 
@@ -133,7 +127,6 @@ public class NearbyFragment extends Fragment {
                     format = new SimpleDateFormat("MMMM dd yyyy hh:mm aaa");
                     time = format.format(date);
 
-
                     Event e = new Event(name, time, descriptionSplit);
                     events.add(e);
                 }
@@ -153,7 +146,6 @@ public class NearbyFragment extends Fragment {
             }
             mAdapter.update(eventArr);
             mAdapter.notifyDataSetChanged();
-
         }
     }
 }
