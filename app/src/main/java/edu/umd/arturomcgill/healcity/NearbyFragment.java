@@ -1,78 +1,62 @@
-package edu.umd.arturomcgill.healcity;
+ package edu.umd.arturomcgill.healcity;
 
-
-import android.graphics.Color;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-public class NearbyFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
 
-    public static final String TAG = NearbyFragment.class.getSimpleName();
+public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_COLOR = "color";
+    private Context context;
+    private ArrayList<Event> eventList;
+    public static final String TAG = NearbyAdapter.class.getSimpleName();
 
-    // TODO: Rename and change types of parameters
-    private int color;
-
-    private RecyclerView recyclerView;
-
-    public NearbyFragment() {
-        // Required empty public constructor
+    public NearbyAdapter(Context context, ArrayList<Event> eventList) {
+        this.context = context;
+        this.eventList = eventList;
     }
 
+    public void update(ArrayList<Event> e) {
+        this.eventList = e;
+    }
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_event, viewGroup, false);
+        return new ViewHolder(v);
+    }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            color = getArguments().getInt(ARG_COLOR);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        Event event = eventList.get(i);
+        viewHolder.textName.setText(event.getName());
+        viewHolder.textTime.setText(event.getTime());
+        viewHolder.textDescription.setText(event.getDescription());
+    }
+
+    @Override
+    public int getItemCount() {
+        return eventList.size();
+    }
+
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textName, textDescription, textTime;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            textName = itemView.findViewById(R.id.main_name);
+            textDescription = itemView.findViewById(R.id.main_description);
+            textTime = itemView.findViewById(R.id.main_time);
+
+
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_square, container, false);
-
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_square_recycler);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        recyclerView.setBackgroundColor(getLighterColor(color));
-
-        NearbyAdapter adapter = new NearbyAdapter(getContext());
-        recyclerView.setAdapter(adapter);
-
-        return rootView;
-    }
-
-
-    /**
-     * Updates {@link RecyclerView} background color upon changing Bottom Navigation item.
-     *
-     * @param color to apply to {@link RecyclerView} background.
-     */
-    public void updateColor(int color) {
-        recyclerView.setBackgroundColor(getLighterColor(color));
-    }
-
-    /**
-     * Facade to return colors at 30% opacity.
-     *
-     * @param color
-     * @return
-     */
-    private int getLighterColor(int color) {
-        return Color.argb(30,
-                Color.red(color),
-                Color.green(color),
-                Color.blue(color)
-        );
     }
 }
