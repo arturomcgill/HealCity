@@ -55,8 +55,6 @@ public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder
             textName = itemView.findViewById(R.id.main_name);
             textDescription = itemView.findViewById(R.id.main_description);
             textTime = itemView.findViewById(R.id.main_time);
-
-
         }
     }
 }
