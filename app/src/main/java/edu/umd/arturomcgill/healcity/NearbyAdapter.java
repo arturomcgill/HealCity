@@ -1,7 +1,9 @@
 package edu.umd.arturomcgill.healcity;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,54 +12,51 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.SimpleItemVH> {
-
-    //  Data
-    private List<String> list = new ArrayList<>();
+public class NearbyAdapter extends RecyclerView.Adapter<NearbyAdapter.ViewHolder> {
 
     private Context context;
+    private ArrayList<Event> eventList;
+    public static final String TAG = NearbyAdapter.class.getSimpleName();
 
-    public NearbyAdapter(Context context) {
+    public NearbyAdapter(Context context, ArrayList<Event> eventList) {
         this.context = context;
-        prepareRandom();
+        this.eventList = eventList;
     }
 
-    private void prepareRandom() {
-        String[] nameArray = context.getResources().getStringArray(R.array.dessert_names);
+    public void update(ArrayList<Event> e) {
+        this.eventList = e;
+    }
 
-        final int SIZE = nameArray.length;
-
-        for (int i = 0; i < SIZE; i++) {
-            list.add("Nearby " + i);
-        }
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.single_event, viewGroup, false);
+        return new ViewHolder(v);
     }
 
     @Override
-    public SimpleItemVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_simplevh, parent, false);
-
-        return new SimpleItemVH(v);
-    }
-
-    @Override
-    public void onBindViewHolder(SimpleItemVH holder, int position) {
-        String s = list.get(position);
-        holder.txtTitle.setText(s);
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        Event event = eventList.get(i);
+        viewHolder.textName.setText(event.getName());
+        viewHolder.textTime.setText(event.getTime());
+        viewHolder.textDescription.setText(event.getDescription());
     }
 
     @Override
     public int getItemCount() {
-        return list != null ? list.size() : 0;
+        return eventList.size();
     }
 
-    protected static class SimpleItemVH extends RecyclerView.ViewHolder {
-        TextView txtTitle;
+    protected static class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView textName, textDescription, textTime;
 
-        public SimpleItemVH(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
+            textName = itemView.findViewById(R.id.main_name);
+            textDescription = itemView.findViewById(R.id.main_description);
+            textTime = itemView.findViewById(R.id.main_time);
 
-            txtTitle = (TextView) itemView.findViewById(R.id.item_simplevh_txttitle);
+
         }
     }
 }
