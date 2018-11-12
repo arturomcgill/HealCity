@@ -1,4 +1,4 @@
- package edu.umd.arturomcgill.healcity;
+package edu.umd.arturomcgill.healcity;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
