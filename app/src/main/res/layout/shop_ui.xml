@@ -1,7 +1,7 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/friendFrame"
+    android:id="@+id/shopFrame"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/bg_light"
@@ -9,14 +9,6 @@
     tools:context="com.example.william.homepage.TemplateFragment">
 
     <!--By default, height of Toolbar and Bottom Navigation are equal-->
-    <TextView
-        android:id="@+id/shop_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingBottom="12dp"
-        android:text="@string/tab_5"
-        android:textColor="@android:color/black"
-        android:textSize="24sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/shop_list"
@@ -24,7 +16,6 @@
         android:layout_height="wrap_content"
         android:clipToPadding="false"
         android:paddingBottom="@dimen/bottom_navigation_height"
-        android:paddingTop="@dimen/activity_horizontal_margin"
-        app:layout_constraintTop_toBottomOf="@+id/shop_header" />
+        android:paddingTop="@dimen/activity_horizontal_margin" />
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

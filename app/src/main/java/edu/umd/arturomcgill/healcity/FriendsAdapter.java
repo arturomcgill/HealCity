@@ -73,19 +73,24 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
             friendName = (TextView) itemView.findViewById(R.id.friend_name);
             friendLevel = (TextView) itemView.findViewById(R.id.friend_level);
 
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     DialogFragment friendProfile = new FriendsProfileModal();
                     Bundle friendInfo = new Bundle();
 
-                    String nameString = friendName.getText().toString();
-                    String levelString = friendLevel.getText().toString();
+                    String name = friend.getName();
+                    int level = friend.getLevel();
 
-                    friendInfo.putString("name", nameString);
+
+                    friendInfo.putString("name", name);
+                    friendInfo.putInt("level", level);
+                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
                     //Just need name (or id) to do query of DB
                     // TODO: OR send Friend object to fragment
-                    friendInfo.putInt("level", Character.getNumericValue(levelString.charAt(levelString.length() - 1)));
+
+
                     friendProfile.setArguments(friendInfo);
 
                     friendProfile.show(fragmentManager, "friend");

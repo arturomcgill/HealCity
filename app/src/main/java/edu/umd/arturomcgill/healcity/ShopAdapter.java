@@ -43,11 +43,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
     public void onBindViewHolder(SimpleItemVH holder, int position) {
         ShopItem shopItem = shopItems.get(position);
 
-        holder.item = shopItem;
-
         holder.name.setText(shopItem.getName());
         holder.cost.setText("Cost: " + shopItem.getCost());
         holder.description.setText(shopItem.getDescription());
+
+        holder.item = shopItem;
+
     }
 
     @Override
