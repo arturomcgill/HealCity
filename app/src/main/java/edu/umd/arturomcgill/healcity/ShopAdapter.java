@@ -43,6 +43,8 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
     public void onBindViewHolder(SimpleItemVH holder, int position) {
         ShopItem shopItem = shopItems.get(position);
 
+        //TODO description only loading off screen bug
+
         holder.name.setText(shopItem.getName());
         holder.cost.setText("Cost: " + shopItem.getCost());
         holder.description.setText(shopItem.getDescription());

@@ -16,22 +16,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f438e656-147a-4f2b-a774-1123260389cb" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/fileHashes/fileHashes.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/classAnalysis.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/javaCompile.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/javaCompile/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.bin" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" afterPath="$PROJECT_DIR$/.gradle/4.4/taskHistory/taskHistory.lock" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/Friend.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/Friend.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsProfileModal.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsProfileModal.java" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java" afterPath="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/friend_profile.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/friend_profile.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/friend_ui.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/friend_ui.xml" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/res/layout/shop_ui.xml" afterPath="$PROJECT_DIR$/app/src/main/res/layout/shop_ui.xml" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -70,17 +55,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ShopAdapter.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ShopAdapter.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="26" column="43" lean-forward="true" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
+            <state relative-caret-position="221">
+              <caret line="45" column="54" lean-forward="false" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FriendsProfileModal.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="FriendsProfileModal.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsProfileModal.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="85">
@@ -3116,13 +3101,13 @@
         <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopFragment.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopItem.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/shop_item_vh.xml" />
-        <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/Friend.java" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/friend_ui.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/shop_ui.xml" />
         <option value="$PROJECT_DIR$/app/src/main/res/layout/friend_profile.xml" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsProfileModal.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java" />
       </list>
     </option>
   </component>
@@ -3824,14 +3809,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="26" column="43" lean-forward="true" selection-start-line="26" selection-start-column="43" selection-end-line="26" selection-end-column="43" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/FriendsFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="241">
@@ -3858,6 +3835,14 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="45" lean-forward="false" selection-start-line="5" selection-start-column="45" selection-end-line="5" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/edu/umd/arturomcgill/healcity/ShopAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="45" column="54" lean-forward="false" selection-start-line="45" selection-start-column="54" selection-end-line="45" selection-end-column="54" />
           <folding />
         </state>
       </provider>
