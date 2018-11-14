@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/shopFrame"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/bg_light"
+    android:paddingBottom="@dimen/bottom_navigation_height"
+    tools:context="com.example.william.homepage.TemplateFragment">
+
+    <!--By default, height of Toolbar and Bottom Navigation are equal-->
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/shop_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/bottom_navigation_height"
+        android:paddingTop="@dimen/activity_horizontal_margin" />
+
+</FrameLayout>
