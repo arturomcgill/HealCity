@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
@@ -89,7 +91,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 //        HomeAdapter adapter = new HomeAdapter(getContext());
 //        recyclerView.setAdapter(adapter);
 
-        View rootView = inflater.inflate(R.layout.home, container, false);
+        View rootView = inflater.inflate(R.layout.home_with_profile_button, container, false);
 
         // Progress Circle
         mCustomProgressBar5 = (CircleProgressBar) rootView.findViewById(R.id.custom_progress5);
@@ -115,6 +117,18 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         }
 
         streakPrevTime = System.currentTimeMillis() - 500;
+
+        ImageButton profileButton = (ImageButton) rootView.findViewById(R.id.profile_button);
+
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentTransaction fragmentTransaction =  getActivity().getSupportFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.coordinator, new ProfileFragment());
+                fragmentTransaction.commit();
+            }
+        });
+
 
         return rootView;
     }
