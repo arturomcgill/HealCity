@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-
+            HealCityLoginActivity.hcla.finish();
         }
 
         //toolbar = (Toolbar) findViewById(R.id.toolbar);

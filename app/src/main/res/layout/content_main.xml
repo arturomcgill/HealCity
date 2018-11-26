@@ -11,8 +11,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.example.william.homepage.MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="com.example.william.homepage.MainActivity">
 
     <com.dinuscxj.progressbar.CircleProgressBar
         android:id="@+id/custom_progress5"
@@ -49,5 +48,11 @@
         android:text="Total Steps"
         android:textSize="30sp"
         android:visibility="visible" />
+
+    <Button
+        android:id="@+id/logoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Log Out" />
 
 </LinearLayout>

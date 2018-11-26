@@ -8,6 +8,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -16,9 +17,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
@@ -77,6 +87,17 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     }
 
     @Override
+    public void onPause()
+    {
+        super.onPause();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.child("users").child(userId).child("totalSteps").setValue(stepCount);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
@@ -89,6 +110,30 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 //        HomeAdapter adapter = new HomeAdapter(getContext());
 //        recyclerView.setAdapter(adapter);
 
+        //Get the step count from database
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        //mAuth.signOut();
+       // getActivity().finish();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+
+        mRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                User userSnapshot = dataSnapshot.getValue(User.class);
+                stepCount = userSnapshot.getTotalSteps();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+      //  mRef.child("users").child(userId).child("totalSteps").setValue(0);
+
         View rootView = inflater.inflate(R.layout.home, container, false);
 
         // Progress Circle
@@ -98,6 +143,22 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             @Override
             public CharSequence format(int progress, int max) {
                 return progress + "%";
+            }
+        });
+
+        //Logout button
+        Button logoutButton = (Button) rootView.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userId = user.getUid();
+                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                mRef.child("users").child(userId).child("totalSteps").setValue(stepCount);
+                mAuth.signOut();
+                Toast.makeText(getContext(), "Logging out.", Toast.LENGTH_SHORT).show();
+                getActivity().finish();
             }
         });
 
