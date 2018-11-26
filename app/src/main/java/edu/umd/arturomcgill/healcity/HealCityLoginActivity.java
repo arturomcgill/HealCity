@@ -91,7 +91,6 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
         mAuth = FirebaseAuth.getInstance();
         hcla = this;
 
-
         //Already logged in
         if(mAuth.getCurrentUser() != null)
         {

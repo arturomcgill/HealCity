@@ -30,12 +30,33 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    public static MainActivity ma;
+
 
 
     private boolean notificationVisible = false;
 
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
+
+    public void endEverything()
+    {
+        //Wait half a second before closing
+        long halfSecond = System.currentTimeMillis() + 500;
+        while(System.currentTimeMillis() < halfSecond)
+        {
+
+        }
+        System.exit(0);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        ma = this;
 
         // Navbar
         AppCompatDelegate.setDefaultNightMode(

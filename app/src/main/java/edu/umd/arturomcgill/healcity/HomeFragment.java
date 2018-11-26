@@ -2,6 +2,7 @@ package edu.umd.arturomcgill.healcity;
 
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -20,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.Activity;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -158,7 +160,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 mRef.child("users").child(userId).child("totalSteps").setValue(stepCount);
                 mAuth.signOut();
                 Toast.makeText(getContext(), "Logging out.", Toast.LENGTH_SHORT).show();
-                getActivity().finish();
+                MainActivity.ma.endEverything();
             }
         });
 
