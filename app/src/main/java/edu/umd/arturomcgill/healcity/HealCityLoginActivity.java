@@ -44,6 +44,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,31 +78,31 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
     private View mProgressView;
     private View mLoginFormView;
 
+    public static HealCityLoginActivity hcla;
+
     private static final String TAG = "HealCityLoginActivity";
 
     private FirebaseAuth mAuth;
 
-    public static HealCityLoginActivity hcla;
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+        hcla = this;
 
+        //Already logged in
         if(mAuth.getCurrentUser() != null)
         {
             Intent intent = new Intent(HealCityLoginActivity.this, MainActivity.class);
-            startActivity(intent);
+            HealCityLoginActivity.this.startActivity(intent);
         }
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heal_city_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
 
-        hcla = this;
-
-
+        mAuth = FirebaseAuth.getInstance();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -213,6 +215,7 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
         //TODO: Replace this with your own logic
         return email.contains("@");
     }
+
 
     private boolean isPasswordValid(String password) {
         //TODO: Replace this with your own logic
@@ -331,7 +334,7 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
         return valid;
     }
 
-    private void createAccount(String email, String password) {
+    private void createAccount(final String email, final String password) {
         Log.d(TAG, "createAccount:" + email);
         if (!validateForm()) {
             return;
@@ -348,11 +351,16 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
                             Toast.makeText(HealCityLoginActivity.this, "Registration successful.",
                                     Toast.LENGTH_SHORT).show();
                             FirebaseUser user = mAuth.getCurrentUser();
+                            String userId = user.getUid();
+                            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                            User userAccount = new User(email);
+                            mRef.child("users").child(userId).setValue(userAccount);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(HealCityLoginActivity.this, "Registration failed.",
                                     Toast.LENGTH_SHORT).show();
+                            finish();
                         }
 
                         // [START_EXCLUDE]
@@ -374,6 +382,17 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            // Sign in success, update UI with the signed-in user's information
+                            Log.d(TAG, "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithEmail:failure", task.getException());
+                            Toast.makeText(HealCityLoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
                         // [START_EXCLUDE]
                         if (!task.isSuccessful()) {
                             Toast.makeText(HealCityLoginActivity.this, "Login failed.",
@@ -381,10 +400,11 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
                         }
                         else
                         {
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(HealCityLoginActivity.this, "Login successful.",
+                                    Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(HealCityLoginActivity.this, MainActivity.class);
-                            startActivity(intent);
+                            HealCityLoginActivity.this.startActivity(intent);
+                            finish();
                         }
                         // [END_EXCLUDE]
                     }
