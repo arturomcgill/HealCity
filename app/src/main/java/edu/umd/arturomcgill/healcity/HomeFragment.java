@@ -36,6 +36,7 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -62,6 +63,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     boolean SAMPLING_ACTIVE = true;
     private long streakStartTime;
     private long streakPrevTime;
+
+    private User currentUser;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
@@ -96,21 +99,13 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.child("users").child(userId).child("totalSteps").setValue(stepCount);
+        mRef.child("users").child(userId).setValue(currentUser);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View rootView = inflater.inflate(R.layout.fragment_square, container, false);
-//
-//        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_square_recycler);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-//        recyclerView.setBackgroundColor(getLighterColor(color));
-//
-//        HomeAdapter adapter = new HomeAdapter(getContext());
-//        recyclerView.setAdapter(adapter);
+                             Bundle savedInstanceState)
+    {
 
         //Get the step count from database
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -120,12 +115,16 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         String userId = user.getUid();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        mRef.addValueEventListener(new ValueEventListener() {
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                User userSnapshot = dataSnapshot.getValue(User.class);
-                stepCount = userSnapshot.getTotalSteps();
+                currentUser = dataSnapshot.getValue(User.class);
+
+                /******************************************
+                 * DO ALL YOUR UPDATING OF VALUES HERE
+                 */
+                stepCount = currentUser.getTotalSteps();
             }
 
             @Override
@@ -157,7 +156,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 FirebaseUser user = mAuth.getCurrentUser();
                 String userId = user.getUid();
                 DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                mRef.child("users").child(userId).child("totalSteps").setValue(stepCount);
+                mRef.child("users").child(userId).setValue(currentUser);
                 mAuth.signOut();
                 Toast.makeText(getContext(), "Logging out.", Toast.LENGTH_SHORT).show();
                 MainActivity.ma.endEverything();
@@ -261,6 +260,10 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 streakPrevTime = streakStartTime;
                 Log.d("STATES:", "" + streakPrevTime + " " + streakStartTime);
                 stepCount++;
+                currentUser.addTotalSteps(1);
+                ArrayList<String> emailTest = new ArrayList<String>();
+                currentUser.setFriendEmails(emailTest);
+
             }
             PREVIOUS_STATE = CURRENT_STATE;
         }
@@ -268,6 +271,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             CURRENT_STATE = BELOW;
             PREVIOUS_STATE = CURRENT_STATE;
         }
+
         stepView.setText(""+(stepCount));;
     }
 
