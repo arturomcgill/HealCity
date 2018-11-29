@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context=".ProfileFragment">
 
     <ImageView
@@ -21,6 +22,15 @@
         android:gravity="center"
         android:text="Name"
         android:textSize="32dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:paddingTop="40dp"
+        android:text="Lifetime Achievements"
+        android:textSize="28dp" />
 
     <ScrollView
         android:layout_width="match_parent"
