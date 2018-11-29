@@ -1,5 +1,6 @@
 package edu.umd.arturomcgill.healcity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 // -------------------
 // -------------------
@@ -25,10 +28,16 @@ public class MainActivity extends AppCompatActivity {
     private AHBottomNavigation bottomNavigation;
     private BottomBarAdapter pagerAdapter;
 
+    private FirebaseAuth mAuth;
+
+
+
     private boolean notificationVisible = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        HealCityLoginActivity.hcla.finish();
 
         // Navbar
         AppCompatDelegate.setDefaultNightMode(
@@ -36,6 +45,21 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mAuth = FirebaseAuth.getInstance();
+
+        FirebaseUser user = mAuth.getCurrentUser();
+
+        //If not logged in, go to log in activity
+        if(user == null)
+        {
+            Intent intent = new Intent(MainActivity.this, HealCityLoginActivity.class);
+            startActivity(intent);
+        }
+        else
+        {
+
+        }
 
         //toolbar = (Toolbar) findViewById(R.id.toolbar);
         //setSupportActionBar(toolbar);

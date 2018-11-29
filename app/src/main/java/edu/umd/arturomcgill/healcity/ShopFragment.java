@@ -39,9 +39,9 @@ public class ShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_square, container, false);
+        View rootView = inflater.inflate(R.layout.shop_ui, container, false);
 
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_square_recycler);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.shop_list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setBackgroundColor(getLighterColor(color));
 
