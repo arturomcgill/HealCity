@@ -53,7 +53,6 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     private File file;
     private Menu menu;
     private TextView stepView;
-    private int stepCount = 0;
     private static final int ABOVE = 1;
     private static final int BELOW = 0;
     private static int CURRENT_STATE = 0;
@@ -89,17 +88,14 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             color = getArguments().getInt(ARG_COLOR);
         }
 
+        currentUser = MainActivity.getCurrentUser();
+
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.child("users").child(userId).setValue(currentUser);
     }
 
     @Override
@@ -107,33 +103,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                              Bundle savedInstanceState)
     {
 
-        //Get the step count from database
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        //mAuth.signOut();
-        // getActivity().finish();
-        FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
 
-        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-            {
-                currentUser = dataSnapshot.getValue(User.class);
-
-                /******************************************
-                 * DO ALL YOUR UPDATING OF VALUES HERE
-                 */
-                stepCount = currentUser.getTotalSteps();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-        //  mRef.child("users").child(userId).child("totalSteps").setValue(0);
 
         View rootView = inflater.inflate(R.layout.home, container, false);
 
@@ -259,7 +229,6 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 }
                 streakPrevTime = streakStartTime;
                 Log.d("STATES:", "" + streakPrevTime + " " + streakStartTime);
-                stepCount++;
                 currentUser.addTotalSteps(1);
                 ArrayList<String> emailTest = new ArrayList<String>();
                 currentUser.setFriendEmails(emailTest);
@@ -272,7 +241,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             PREVIOUS_STATE = CURRENT_STATE;
         }
 
-        stepView.setText(""+(stepCount));;
+        stepView.setText("" + currentUser.getTotalSteps());
     }
 
     private float[] lowPassFilter(float[] input, float[] prev) {

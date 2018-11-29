@@ -89,6 +89,7 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
     {
         super.onCreate(savedInstanceState);
         mAuth = FirebaseAuth.getInstance();
+
         hcla = this;
 
         //Already logged in
@@ -101,8 +102,6 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
         setContentView(R.layout.activity_heal_city_login);
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-
-        mAuth = FirebaseAuth.getInstance();
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -134,6 +133,12 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
 
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
+    }
+
+    private void waitMillis(int millis)
+    {
+        long currentTimePlusMilils = System.currentTimeMillis() + millis;
+        while(System.currentTimeMillis() < currentTimePlusMilils);
     }
 
     private boolean mayRequestContacts() {
@@ -353,7 +358,7 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userId = user.getUid();
                             DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                            User userAccount = new User(email);
+                            User userAccount = new User(email, userId);
                             mRef.child("users").child(userId).setValue(userAccount);
                         } else {
                             // If sign in fails, display a message to the user.

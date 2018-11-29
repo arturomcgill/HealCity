@@ -23,6 +23,7 @@ import java.util.stream.IntStream;
 public class User
 {
     private String email;
+    private String uid;
     private int totalSteps;
     private Bitmap profilePhoto;
     private ArrayList<String> lifetimeAchievements;
@@ -45,11 +46,11 @@ public class User
         dailyXP = new HashMap<Date, Integer>();
     }
 
-    public User(String email)
+    public User(String email, String uid)
     {
         this();
         this.email = email;
-
+        this.uid = uid;
     }
 
     public String getEmail()
@@ -58,6 +59,10 @@ public class User
     }
 
 
+    public String getUid()
+    {
+        return uid;
+    }
 
     public ArrayList<String> getLifetimeAchievements()
     {
