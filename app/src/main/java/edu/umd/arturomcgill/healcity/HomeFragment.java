@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Button;
 import android.widget.Toast;
 import android.app.Activity;
+import android.support.design.widget.FloatingActionButton;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -39,6 +40,8 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+
+
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -59,6 +62,10 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     private static final int BELOW = 0;
     private static int CURRENT_STATE = 0;
     private static int PREVIOUS_STATE = BELOW;
+    private boolean isFABOpen = false;
+    private FloatingActionButton fab1;
+    private FloatingActionButton fab2;
+    private FloatingActionButton fab3;
 
     private long startTime;
     boolean SAMPLING_ACTIVE = true;
@@ -161,8 +168,72 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             }
         });
 
+        View content = rootView.findViewById(R.id.content);
+
+
+        FloatingActionButton fab = (FloatingActionButton) content.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) content.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) content.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) content.findViewById(R.id.fab3);
+        closeFABMenu();
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(!isFABOpen){
+                    showFABMenu();
+                }else{
+                    closeFABMenu();
+                }
+            }
+        });
+
+        fab3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LogActivity.class);
+                intent.putExtra("type", "fruit");
+                startActivity(intent);
+            }
+
+        });
+
+        fab1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LogActivity.class);
+                intent.putExtra("type", "volunteer");
+                startActivity(intent);
+            }
+        });
+
+        fab2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), LogActivity.class);
+                intent.putExtra("type", "transportation");
+                startActivity(intent);
+            }
+        });
+
+
+
+
 
         return rootView;
+    }
+
+    private void showFABMenu(){
+        isFABOpen=true;
+        fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
+        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
+        fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+    }
+
+    private void closeFABMenu(){
+        isFABOpen=false;
+        fab1.animate().translationY(0);
+        fab2.animate().translationY(0);
+        fab3.animate().translationY(0);
     }
 
     private void simulateProgress() {

@@ -16,6 +16,19 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="fruit">"How much fruit did you eat?"</string>
+    <string name="vegetables">"How many vegetables did you eat?"</string>
+    <string name="enterFruits">"Enter number of fruit"</string>
+    <string name="enterVeg">"Enter number of vegetables"</string>
+    <string name="submit">"Submit"</string>
+
+    <string name="volunteer">"How many hours did you \n volunteer?"</string>
+    <string name="enterVolunteer">Enter number of hours</string>
+
+    <string name="public_transport">"Which public transportation did you take?"</string>
+    <string name="bus">"Bus"</string>
+    <string name="carpool">"Carpool"</string>
+    <string name ="train">"Train"</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="tab_1">Home</string>
