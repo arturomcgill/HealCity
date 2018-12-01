@@ -2,7 +2,7 @@
     <string name="action_settings">Settings</string>
 
     <string name="app_name">HealCity</string>
-    <string name="title_activity_heal_city_login">Sign in</string>
+    <string name="title_activity_heal_city_login">Heal City</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>

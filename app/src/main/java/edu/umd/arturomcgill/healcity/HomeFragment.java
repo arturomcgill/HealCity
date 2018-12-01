@@ -2,12 +2,14 @@ package edu.umd.arturomcgill.healcity;
 
 
 import android.animation.ValueAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.RecyclerView;
@@ -20,14 +22,23 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
+import android.app.Activity;
 
 import com.dinuscxj.progressbar.CircleProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.opencsv.CSVWriter;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -44,7 +55,6 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     private File file;
     private Menu menu;
     private TextView stepView;
-    private int stepCount = 0;
     private static final int ABOVE = 1;
     private static final int BELOW = 0;
     private static int CURRENT_STATE = 0;
@@ -54,6 +64,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     boolean SAMPLING_ACTIVE = true;
     private long streakStartTime;
     private long streakPrevTime;
+
+    private User currentUser;
 
     public static final String TAG = HomeFragment.class.getSimpleName();
 
@@ -78,20 +90,22 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             color = getArguments().getInt(ARG_COLOR);
         }
 
+        currentUser = MainActivity.getCurrentUser();
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-//        View rootView = inflater.inflate(R.layout.fragment_square, container, false);
-//
-//        recyclerView = (RecyclerView) rootView.findViewById(R.id.fragment_square_recycler);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-//        recyclerView.setBackgroundColor(getLighterColor(color));
-//
-//        HomeAdapter adapter = new HomeAdapter(getContext());
-//        recyclerView.setAdapter(adapter);
+                             Bundle savedInstanceState)
+    {
+
+
 
         View rootView = inflater.inflate(R.layout.home_with_profile_button, container, false);
 
@@ -105,15 +119,22 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             }
         });
 
-        //TEMPORARY logout button
-        Button mLogoutButton = (Button) rootView.findViewById(R.id.logout_button);
-        mLogoutButton.setOnClickListener(new View.OnClickListener() {
+        //Logout button
+        Button logoutButton = (Button) rootView.findViewById(R.id.logoutButton);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                FirebaseAuth.getInstance().signOut();
-                getActivity().finish();
+            public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                FirebaseUser user = mAuth.getCurrentUser();
+                String userId = user.getUid();
+                DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+                mRef.child("users").child(userId).setValue(currentUser);
+                mAuth.signOut();
+                Toast.makeText(getContext(), "Logging out.", Toast.LENGTH_SHORT).show();
+                MainActivity.ma.endEverything();
             }
         });
+
 
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.count);
         stepView = rootView.findViewById(R.id.count);
@@ -222,7 +243,10 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 }
                 streakPrevTime = streakStartTime;
                 Log.d("STATES:", "" + streakPrevTime + " " + streakStartTime);
-                stepCount++;
+                currentUser.addTotalSteps(1);
+                ArrayList<String> emailTest = new ArrayList<String>();
+                currentUser.setFriendEmails(emailTest);
+
             }
             PREVIOUS_STATE = CURRENT_STATE;
         }
@@ -230,7 +254,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             CURRENT_STATE = BELOW;
             PREVIOUS_STATE = CURRENT_STATE;
         }
-        stepView.setText(""+(stepCount));;
+
+        stepView.setText("" + currentUser.getTotalSteps());
     }
 
     private float[] lowPassFilter(float[] input, float[] prev) {

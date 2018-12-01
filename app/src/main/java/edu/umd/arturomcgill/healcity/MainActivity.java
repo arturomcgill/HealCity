@@ -16,6 +16,11 @@ import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
 import com.aurelhubert.ahbottomnavigation.notification.AHNotification;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 // -------------------
 // -------------------
@@ -30,20 +35,86 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
 
+    public static MainActivity ma;
+    private Bundle bundle;
+
+
+
+    private static User currentUser;
+
 
 
     private boolean notificationVisible = false;
 
     @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+    }
+
+    public void endEverything()
+    {
+        //Wait half a second before closing
+        long halfSecond = System.currentTimeMillis() + 500;
+        while(System.currentTimeMillis() < halfSecond)
+        {
+
+        }
+        System.exit(0);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+        mRef.child("users").child(userId).setValue(currentUser);
+    }
+
+
     protected void onCreate(Bundle savedInstanceState)
     {
-        HealCityLoginActivity.hcla.finish();
+        super.onCreate(savedInstanceState);
+        //Get the step count from database
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        //mAuth.signOut();
+        // getActivity().finish();
+        FirebaseUser user = mAuth.getCurrentUser();
+        String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        this.bundle = savedInstanceState;
+
+        mRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                currentUser = dataSnapshot.getValue(User.class);
+                onCreateAux(bundle);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public static User getCurrentUser()
+    {
+        return currentUser;
+    }
+
+    protected void onCreateAux(Bundle savedInstanceState) {
+
+        ma = this;
 
         // Navbar
         AppCompatDelegate.setDefaultNightMode(
                 AppCompatDelegate.MODE_NIGHT_AUTO);
 
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         mAuth = FirebaseAuth.getInstance();
@@ -58,27 +129,10 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-
+            HealCityLoginActivity.hcla.finish();
         }
 
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
-        //noinspection ConstantConditions
-        //getSupportActionBar().setTitle("Bottom Navigation");
-
-
         setupViewPager();
-
-
-//        final HomeFragment fragment = new HomeFragment();
-//        Bundle bundle = new Bundle();
-//        bundle.putInt("color", ContextCompat.getColor(this, colors[0]));
-//        fragment.setArguments(bundle);
-
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .add(R.id.frame, fragment, HomeFragment.TAG)
-//                .commit();
 
         bottomNavigation = (AHBottomNavigation) findViewById(R.id.bottom_navigation);
         setupBottomNavBehaviors();
