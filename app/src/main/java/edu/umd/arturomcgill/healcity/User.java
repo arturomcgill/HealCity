@@ -391,12 +391,12 @@ public class User
         return dailySteps;
     }
 
-    public void setDailysteps(HashMap<Date, Integer> dailySteps)
+    public void setDailySteps(HashMap<Date, Integer> dailySteps)
     {
         this.dailySteps = dailySteps;
     }
 
-    public void resetDailysteps()
+    public void resetDailySteps()
     {
         this.dailySteps = new HashMap<Date, Integer>();
     }
