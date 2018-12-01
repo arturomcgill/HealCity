@@ -151,8 +151,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         return rootView;
     }
 
-    private void simulateProgress() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, 54);
+    private void simulateProgress(int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -163,7 +163,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         });
 
         //animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setDuration(2000);
+        animator.setDuration(1000);
         animator.start();
     }
 
@@ -172,8 +172,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         super.onResume();
 
         // Progress Circle
-        mCustomProgressBar5.setProgress(54);
-        simulateProgress();
+        mCustomProgressBar5.setProgress(mCustomProgressBar5.getProgress());
+        simulateProgress(0, mCustomProgressBar5.getProgress());
 
         // Total Steps
         sensorManager.registerListener(this,
@@ -210,6 +210,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         return super.onOptionsItemSelected(item);
     }
 
+    int tempStep = 0;
+
     private void handleEvent(SensorEvent event) {
         prev = lowPassFilter(event.values,prev);
         Accelerometer raw = new Accelerometer(event.values);
@@ -240,8 +242,15 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             CURRENT_STATE = BELOW;
             PREVIOUS_STATE = CURRENT_STATE;
         }
-
+        tempStep = currentUser.getTotalSteps() + 1;
         stepView.setText("" + currentUser.getTotalSteps());
+
+        if (tempStep % 10 == 0) {
+            int progress = mCustomProgressBar5.getProgress();
+            mCustomProgressBar5.setProgress(progress + 10);
+            simulateProgress(progress, progress + 10);
+            tempStep = 0;
+        }
     }
 
     private float[] lowPassFilter(float[] input, float[] prev) {
