@@ -3666,7 +3666,14 @@
       <option name="project" value="LOCAL" />
       <updated>1543733353139</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Commiting login/signup 3">
+      <created>1543733560559</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1543733560559</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -3710,7 +3717,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Commiting login/signup" />
     <MESSAGE value="Commiting login/signup 2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commiting login/signup 2" />
+    <MESSAGE value="Commiting login/signup 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commiting login/signup 3" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
