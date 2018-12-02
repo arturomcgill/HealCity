@@ -33,6 +33,11 @@
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity android:name=".HealCitySignUpActivity" android:launchMode="singleInstance">
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".HealCityLoginActivity"
             android:label="@string/title_activity_heal_city_login">

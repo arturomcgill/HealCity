@@ -164,7 +164,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            HealCityLoginActivity.hcla.finish();
+            try {
+                HealCityLoginActivity.hcla.finish();
+            }
+            catch(NullPointerException npe)
+            {
+                //Activity was already killed by android, no need to kill it.
+            }
         }
 
         setupViewPager();
