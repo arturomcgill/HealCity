@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Friend {
 
-    private String name;
+    private String email;
     private int level;
     private int points;
     private ArrayList<String> achievements = new ArrayList<>();
@@ -14,8 +14,8 @@ public class Friend {
     public Friend() {
     }
 
-    public Friend(String name, int level, int points) {
-        this.name = name;
+    public Friend(String email, int level, int points) {
+        this.email = email;
         this.level = level;
         this.points = points;
 
@@ -26,12 +26,12 @@ public class Friend {
         }
     }
 
-    public String getName() {
-        return name;
+    public String getEmail() {
+        return email;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setEmail(String name) {
+        this.email = email;
     }
 
     public int getLevel() {

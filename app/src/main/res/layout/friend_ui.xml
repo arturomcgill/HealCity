@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/friendFrame"
@@ -10,12 +10,41 @@
 
     <!--By default, height of Toolbar and Bottom Navigation are equal-->
 
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal">
+
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/textInputLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.support.design.widget.TextInputEditText
+                android:id="@+id/searchFriend"
+                android:layout_width="264dp"
+                android:layout_height="match_parent"
+                android:hint="Add Friend by Email" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/addFriend"
+            android:layout_width="138dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:text="Add"
+            app:layout_constraintLeft_toRightOf="@+id/textInputLayout"
+            tools:layout_editor_absoluteY="9dp" />
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/friend_list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:paddingBottom="@dimen/bottom_navigation_height"
-        android:paddingTop="@dimen/activity_horizontal_margin" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
-</FrameLayout>
+    </android.support.v7.widget.RecyclerView>
+
+</android.support.constraint.ConstraintLayout>

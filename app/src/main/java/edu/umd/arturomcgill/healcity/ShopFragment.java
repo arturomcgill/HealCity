@@ -5,9 +5,15 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
 
 public class ShopFragment extends Fragment {
 
@@ -22,6 +28,10 @@ public class ShopFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    private User currentUser;
+
+    private HashMap<String, ShopItem> allItems = new HashMap<>();
+
     public ShopFragment() {
         // Required empty public constructor
     }
@@ -33,6 +43,19 @@ public class ShopFragment extends Fragment {
         if (getArguments() != null) {
             color = getArguments().getInt(ARG_COLOR);
         }
+
+        currentUser = MainActivity.getCurrentUser();
+
+        currentUser.setPoints(7000);
+        currentUser.resetUpgradesPurchased();
+//        currentUser.addUpgradesPurchased("Remove Ads");
+
+        allItems.put("Remove Ads", new ShopItem("Remove Ads", R.drawable.remove_ads, 10000, "Remove Ads"));
+        allItems.put("$10 Zipcar Credit", new ShopItem("$10 Zipcar Credit", R.drawable.zipcar, 7500, "$10 Zipcar Credit"));
+        allItems.put("$5 Metro Credit", new ShopItem("$5 Metro Credit", R.drawable.metro_card, 5000, "$5 Metro Credit"));
+        allItems.put("50% off Apples", new ShopItem("50% off Apples", R.drawable.apple, 4000, "50% off Apples"));
+        allItems.put("25% off Salad", new ShopItem("25% off Salad", R.drawable.salad, 3000, "25% off Salad"));
+
     }
 
     @Override
@@ -45,8 +68,14 @@ public class ShopFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setBackgroundColor(getLighterColor(color));
 
-        ShopAdapter adapter = new ShopAdapter(getContext());
+        ShopAdapter adapter = new ShopAdapter(getContext(), currentUser, allItems, rootView);
         recyclerView.setAdapter(adapter);
+
+        TextView userName = rootView.findViewById(R.id.user_first_name);
+        TextView userPoints = rootView.findViewById(R.id.userPoints);
+
+        userName.setText(currentUser.getFirstName());
+        userPoints.setText("Points: " + currentUser.getPoints());
 
         return rootView;
     }
