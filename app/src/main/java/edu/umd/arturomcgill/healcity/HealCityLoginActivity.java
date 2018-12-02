@@ -77,6 +77,7 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    private final static int REQUEST_SIGNUP = 0;
 
     public static HealCityLoginActivity hcla;
 
@@ -123,11 +124,13 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
             }
         });
 
-        Button mEmailRegisterButton = (Button) findViewById(R.id.email_register_button);
+        Button mEmailRegisterButton = (Button) findViewById(R.id.email_sign_up_button);
         mEmailRegisterButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                //createAccount(mEmailView.getText().toString(), mPasswordView.getText().toString());
+                Intent intent = new Intent(HealCityLoginActivity.this, HealCitySignUpActivity.class);
+                startActivityForResult(intent, REQUEST_SIGNUP);
             }
         });
 
