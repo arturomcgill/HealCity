@@ -9,6 +9,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -52,7 +53,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     private float[] prev = {0f,0f,0f};
     private File file;
     private Menu menu;
-    private TextView stepView;
+    private TextView stepView, levelView;
     private static final int ABOVE = 1;
     private static final int BELOW = 0;
     private static int CURRENT_STATE = 0;
@@ -136,6 +137,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.count);
         stepView = rootView.findViewById(R.id.count);
+        levelView = rootView.findViewById(R.id.level);
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
         //stepView = findViewById(R.id.count);
         path =  getActivity().getExternalFilesDir(null);
@@ -172,6 +174,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         super.onResume();
 
         // Progress Circle
+        //testing
+        mCustomProgressBar5.setProgress(80);
         mCustomProgressBar5.setProgress(mCustomProgressBar5.getProgress());
         simulateProgress(0, mCustomProgressBar5.getProgress());
 
@@ -210,7 +214,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         return super.onOptionsItemSelected(item);
     }
 
-    int tempStep = 0;
+    int tempStep = 1;
+    int level = 1;
 
     private void handleEvent(SensorEvent event) {
         prev = lowPassFilter(event.values,prev);
@@ -242,14 +247,30 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             CURRENT_STATE = BELOW;
             PREVIOUS_STATE = CURRENT_STATE;
         }
-        tempStep = currentUser.getTotalSteps() + 1;
+        tempStep = currentUser.getTotalSteps();
         stepView.setText("" + currentUser.getTotalSteps());
+        levelView.setText("Level: " + level);
 
-        if (tempStep % 10 == 0) {
+        if ((tempStep + 1) % 10 == 0) {
             int progress = mCustomProgressBar5.getProgress();
             mCustomProgressBar5.setProgress(progress + 10);
             simulateProgress(progress, progress + 10);
-            tempStep = 0;
+            tempStep = 1;
+        }
+
+        if (mCustomProgressBar5.getProgress() >= 100) {
+            level++;
+            final Toast toast = Toast.makeText(getActivity(), "Leveled up to level " + level, Toast.LENGTH_SHORT);
+            toast.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toast.cancel();
+                }
+            }, 1500);
+            mCustomProgressBar5.setProgress(0);
         }
     }
 
