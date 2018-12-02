@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
         pagerAdapter.addFragments(createHomeFragment(R.color.bottomtab_0));
         pagerAdapter.addFragments(createFriendsFragment(R.color.bottomtab_4));
-        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_1));
+        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_0));
         pagerAdapter.addFragments(createNearbyFragment(R.color.bottomtab_2));
         pagerAdapter.addFragments(createShopFragment(R.color.colorPrimaryNight));
 
