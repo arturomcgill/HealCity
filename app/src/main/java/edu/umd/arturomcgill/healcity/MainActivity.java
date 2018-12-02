@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 // -------------------
 // -------------------
 
@@ -41,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static User currentUser;
+    private static ArrayList<User> allUsers;
 
 
 
@@ -71,7 +74,15 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.child("users").child(userId).setValue(currentUser);
+     //   mRef.child("users").child(userId).setValue(currentUser);
+
+        mRef.removeValue();
+        for(int i = 0; i < allUsers.size(); i++)
+        {
+            //Update db
+            User u = allUsers.get(i);
+            mRef.child("users").child(u.getUid()).setValue(u);
+        }
     }
 
 
@@ -83,15 +94,23 @@ public class MainActivity extends AppCompatActivity {
         //mAuth.signOut();
         // getActivity().finish();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        final String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users");
+        allUsers = new ArrayList<User>();
         this.bundle = savedInstanceState;
 
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                currentUser = dataSnapshot.getValue(User.class);
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    User u = userSnapshot.getValue(User.class);
+                    allUsers.add(u);
+                }
+
+                currentUser = queryForCurrentUser(userId);
+
                 onCreateAux(bundle);
             }
 
@@ -102,9 +121,25 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private User queryForCurrentUser(String userId)
+    {
+        for(int i = 0; i < allUsers.size(); i++)
+        {
+            if(userId.equals(allUsers.get(i).getUid()))
+                return allUsers.get(i);
+        }
+
+        return null;
+    }
+
     public static User getCurrentUser()
     {
         return currentUser;
+    }
+
+    public static ArrayList<User> getAllUsers()
+    {
+        return allUsers;
     }
 
     protected void onCreateAux(Bundle savedInstanceState) {

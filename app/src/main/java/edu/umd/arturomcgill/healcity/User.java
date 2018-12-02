@@ -210,7 +210,7 @@ public class User
     }
 
 
-    public int getGoints()
+    public int getPoints()
     {
         return points;
     }
