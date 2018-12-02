@@ -27,7 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int[] colors = {R.color.bottomtab_0, R.color.bottomtab_1, R.color.bottomtab_2, R.color.bottomtab_3, R.color.bottomtab_4};
+    private final int[] colors = {R.color.bottomtab_0, R.color.bottomtab_4, R.color.bottomtab_1, R.color.bottomtab_2, R.color.colorPrimaryNight};
     private Toolbar toolbar;
     private NoSwipePager viewPager;
     private AHBottomNavigation bottomNavigation;
@@ -169,10 +169,10 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
 
         pagerAdapter.addFragments(createHomeFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createFriendsFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createNearbyFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createShopFragment(R.color.bottomtab_0));
+        pagerAdapter.addFragments(createFriendsFragment(R.color.bottomtab_4));
+        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_1));
+        pagerAdapter.addFragments(createNearbyFragment(R.color.bottomtab_2));
+        pagerAdapter.addFragments(createShopFragment(R.color.colorPrimaryNight));
 
         viewPager.setAdapter(pagerAdapter);
     }
@@ -283,10 +283,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void addBottomNavigationItems() {
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_home, colors[0]);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_friends, colors[0]);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_goals, colors[0]);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_nearby, colors[0]);
-        AHBottomNavigationItem item5 = new AHBottomNavigationItem(R.string.tab_5, R.drawable.ic_shop, colors[0]);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_friends, colors[1]);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_goals, colors[2]);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_nearby, colors[3]);
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem(R.string.tab_5, R.drawable.ic_shop, colors[4]);
 
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);
