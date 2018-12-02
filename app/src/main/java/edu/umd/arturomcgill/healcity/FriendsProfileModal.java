@@ -22,7 +22,7 @@ public class FriendsProfileModal extends DialogFragment {
         super.onCreateDialog(savedInstanceState);
 
         String name = getArguments().getString("name");
-//        int level = getArguments().getInt("level");
+        int level = getArguments().getInt("level");
         ArrayList<String> achievements = getArguments().getStringArrayList("achievements");
 
 
@@ -42,7 +42,7 @@ public class FriendsProfileModal extends DialogFragment {
 
 
         builder.setIcon(R.drawable.ic_friends);
-        builder.setTitle(name);
+        builder.setTitle(name + " Level: " + level);
         builder.setView(friendProfile);
         //TODO: List of Friend achievements
 

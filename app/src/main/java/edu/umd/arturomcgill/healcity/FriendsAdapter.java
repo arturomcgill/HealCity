@@ -75,7 +75,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
     public void onBindViewHolder(SimpleItemVH holder, int position) {
         User friend = friends.get(position);
 
-//        holder.friendLevel.setText("Level: " + friend.get);
+        holder.friendLevel.setText("Level: " + friend.getLifetimeXP()/1000);
         holder.friendEmail.setText(friend.getEmail());
         holder.friend = friend;
     }
@@ -88,13 +88,13 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
     protected static class SimpleItemVH extends RecyclerView.ViewHolder {
         User friend;
         TextView friendEmail;
-//        TextView friendLevel;
+        TextView friendLevel;
 
         public SimpleItemVH(View itemView, final FragmentManager fragmentManager) {
             super(itemView);
 
             friendEmail = (TextView) itemView.findViewById(R.id.friend_name);
-//            friendLevel = (TextView) itemView.findViewById(R.id.friend_level);
+            friendLevel = (TextView) itemView.findViewById(R.id.friend_level);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -103,11 +103,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
                     Bundle friendInfo = new Bundle();
 
                     String name = friend.getEmail();
-//                    int level = friend.getLevel();
+                    int level = friend.getLifetimeXP()/1000;
 
 
                     friendInfo.putString("name", name);
-//                    friendInfo.putInt("level", level);
+                    friendInfo.putInt("level", level);
 //                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
                     //Just need name (or id) to do query of DB
                     // TODO: OR send Friend object to fragment
