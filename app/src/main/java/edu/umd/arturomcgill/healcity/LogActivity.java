@@ -65,7 +65,12 @@ public class LogActivity extends Activity {
                     int xp = result * 25;
 
 
+
+
                     User user = MainActivity.getCurrentUser();
+
+                    HomeFragment.addProgress(xp);
+                    user.setPercentage(user.getPercentage() + xp);
 
                     int num = user.getLifetimeFruitsVeggies();
 
@@ -127,6 +132,10 @@ public class LogActivity extends Activity {
                     int xp = numHours * 200;
 
                     User user = MainActivity.getCurrentUser();
+
+                    HomeFragment.addProgress(xp);
+                    user.setPercentage(user.getPercentage() + xp);
+
                     int totalHours = user.getLifetimeVolunteering();
 
                     if(totalHours < 10 && totalHours + numHours >= 10){
@@ -204,6 +213,9 @@ public class LogActivity extends Activity {
                         }
 
                         int xp = 50;
+
+                        HomeFragment.addProgress(xp);
+                        user.setPercentage(user.getPercentage() + xp);
 
                         user.addPoints(xp);
                         user.addDailyXPToDate(today.toString(), xp);
