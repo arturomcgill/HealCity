@@ -28,6 +28,7 @@ public class User
     private int level;
     private int lifetimeVolunteering;
     private int lifetimePublicTransportation;
+    private int lifetimeParks;
     private String firstName;
     private String lastName;
     private int points;
@@ -57,6 +58,7 @@ public class User
         latitude = 0.0;
         longitude = 0.0;
         level = 1;
+        lifetimeParks = 0;
     }
 
     public User(String email, String uid, String firstName, String lastName)
@@ -315,12 +317,22 @@ public class User
 
     public void resetlifetimeParks()
     {
-        level = 0;
+        this.lifetimeParks = 0;
     }
 
-    public void addlifetimeParks(int parks)
+    public void addLifetimeParks(int parks)
     {
-        level += parks;
+        this.lifetimeParks += parks;
+    }
+
+    public void setLifetimeParks(int parks)
+    {
+        this.lifetimeParks = parks;
+    }
+
+    public int getLifetimeParks()
+    {
+        return lifetimeParks;
     }
 
     public int getLifetimeXP()
@@ -361,7 +373,7 @@ public class User
 
     public Bitmap extractBitmap()
     {
-        if(profilePhotoEncoded != null || !profilePhotoEncoded.equals("")) {
+        if(profilePhotoEncoded != null && !profilePhotoEncoded.equals("")) {
             byte[] imagesAsBytes = Base64.decode(profilePhotoEncoded.substring(profilePhotoEncoded.indexOf(",") + 1), Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(imagesAsBytes, 0, imagesAsBytes.length);
         }
