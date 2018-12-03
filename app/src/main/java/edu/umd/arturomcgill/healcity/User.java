@@ -32,6 +32,14 @@ public class User
     private ArrayList<String> goalsSet;
     private ArrayList<String> goalsMet;
     private HashMap<Date, Integer> dailyXP;
+    private HashMap<Date, Integer> dailyFruitsVeggies;
+    private HashMap<Date, Integer> dailySteps;
+    private int lifetimeParks;
+    private int lifetimeVolunteering;
+    private int lifetimePublicTransportation;
+    private String firstName;
+    private String lastName;
+    private int points;
 
 
     public User()
@@ -44,13 +52,24 @@ public class User
         goalsMet = new ArrayList<String>();
         goalsSet = new ArrayList<String>();
         dailyXP = new HashMap<Date, Integer>();
+        dailySteps = new HashMap<Date, Integer>();
+        dailyFruitsVeggies = new HashMap<Date, Integer>();
+        firstName = "NoFirstName";
+        lastName ="NoLastName";
     }
 
-    public User(String email, String uid)
+    public User(String email, String uid, String firstName, String lastName)
     {
         this();
         this.email = email;
         this.uid = uid;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
+    public User(String email, String uid)
+    {
+        this(email, uid, "NoFirstName", "NoLastName");
     }
 
     public String getEmail()
@@ -64,6 +83,16 @@ public class User
         return uid;
     }
 
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
     public ArrayList<String> getLifetimeAchievements()
     {
         return lifetimeAchievements;
@@ -72,6 +101,40 @@ public class User
     public void setLifetimeAchievements(ArrayList<String> lifetimeAchievements)
     {
         this.lifetimeAchievements = lifetimeAchievements;
+    }
+
+    public int getLifetimeSteps()
+    {
+        if(dailySteps.size() == 0)
+            return 0;
+        else
+        {
+            int sum = 0;
+
+            for(Map.Entry<Date, Integer> entry : dailySteps.entrySet())
+            {
+                sum += entry.getValue();
+            }
+
+            return sum;
+        }
+    }
+
+    public int getLifetimeFruitsVeggies()
+    {
+        if(dailyFruitsVeggies.size() == 0)
+            return 0;
+        else
+        {
+            int sum = 0;
+
+            for(Map.Entry<Date, Integer> entry : dailyFruitsVeggies.entrySet())
+            {
+                sum += entry.getValue();
+            }
+
+            return sum;
+        }
     }
 
     public void resetLifetimeAchievements()
@@ -123,6 +186,90 @@ public class User
     public void addTotalSteps(int steps)
     {
         totalSteps += steps;
+    }
+
+
+    public int getLifetimeVolunteering()
+    {
+        return lifetimeVolunteering;
+    }
+
+    public void setLifetimeVolunteering(int lifetimeVolunteering)
+    {
+        this.lifetimeVolunteering = lifetimeVolunteering;
+    }
+
+    public void resetLifetimeVolunteering()
+    {
+        lifetimeVolunteering = 0;
+    }
+
+    public void addlifetimeVolunteering(int volunteerHours)
+    {
+        lifetimeVolunteering += volunteerHours;
+    }
+
+
+    public int getGoints()
+    {
+        return points;
+    }
+
+    public void setPoints(int points)
+    {
+        this.points = points;
+    }
+
+    public void resetPoints()
+    {
+        points = 0;
+    }
+
+    public void addPoints(int points)
+    {
+        this.points += points;
+    }
+
+
+    public int getlifetimePublicTransportation()
+    {
+        return lifetimePublicTransportation;
+    }
+
+    public void setlifetimePublicTransportation(int lifetimePublicTransportation)
+    {
+        this.lifetimePublicTransportation = lifetimePublicTransportation;
+    }
+
+    public void resetlifetimePublicTransportation()
+    {
+        lifetimePublicTransportation = 0;
+    }
+
+    public void addlifetimePublicTransportation(int publicTransport)
+    {
+        lifetimePublicTransportation += publicTransport;
+    }
+
+
+    public int getlifetimeParks()
+    {
+        return lifetimeParks;
+    }
+
+    public void setlifetimeParks(int lifetimeParks)
+    {
+        this.lifetimeParks = lifetimeParks;
+    }
+
+    public void resetlifetimeParks()
+    {
+        lifetimeParks = 0;
+    }
+
+    public void addlifetimeParks(int parks)
+    {
+        lifetimeParks += parks;
     }
 
     public int getLifetimeXP()
@@ -237,5 +384,45 @@ public class User
     public void addDailyXPToDate(Date date, int xp)
     {
         this.dailyXP.put(date, xp);
+    }
+
+    public HashMap<Date, Integer> getDailySteps()
+    {
+        return dailySteps;
+    }
+
+    public void setDailySteps(HashMap<Date, Integer> dailySteps)
+    {
+        this.dailySteps = dailySteps;
+    }
+
+    public void resetDailySteps()
+    {
+        this.dailySteps = new HashMap<Date, Integer>();
+    }
+
+    public void addDailystepsToDate(Date date, int steps)
+    {
+        this.dailySteps.put(date, steps);
+    }
+
+    public HashMap<Date, Integer> getFruitsVeggies()
+    {
+        return dailyFruitsVeggies;
+    }
+
+    public void setFruitsVeggies(HashMap<Date, Integer> dailyFruitsVeggies)
+    {
+        this.dailyFruitsVeggies = dailyFruitsVeggies;
+    }
+
+    public void resetFruitsVeggies()
+    {
+        this.dailyFruitsVeggies = new HashMap<Date, Integer>();
+    }
+
+    public void resetFruitsVeggies(Date date, int steps)
+    {
+        this.dailyFruitsVeggies.put(date, steps);
     }
 }
