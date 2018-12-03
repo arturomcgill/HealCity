@@ -20,6 +20,7 @@ public class GoalsFragment extends Fragment {
 
     // TODO: Rename and change types of parameters
     private int color;
+    private User currentUser;
 
     private RecyclerView recyclerView;
 
@@ -34,6 +35,9 @@ public class GoalsFragment extends Fragment {
         if (getArguments() != null) {
             color = getArguments().getInt(ARG_COLOR);
         }
+
+        currentUser = MainActivity.getCurrentUser();
+
     }
 
     @Override
@@ -46,7 +50,7 @@ public class GoalsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setBackgroundColor(getLighterColor(color));
 
-        GoalsAdapter adapter = new GoalsAdapter(getContext());
+        GoalsAdapter adapter = new GoalsAdapter(getContext(), currentUser);
         recyclerView.setAdapter(adapter);
 
         return rootView;

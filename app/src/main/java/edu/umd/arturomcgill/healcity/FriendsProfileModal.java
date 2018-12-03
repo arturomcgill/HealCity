@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class FriendsProfileModal extends DialogFragment {
 
-    private Friend friend;
+    private User friend;
 
     private RecyclerView recyclerView;
 
@@ -42,7 +42,7 @@ public class FriendsProfileModal extends DialogFragment {
 
 
         builder.setIcon(R.drawable.ic_friends);
-        builder.setTitle(name + ": Level " + String.valueOf(level));
+        builder.setTitle(name + " Level: " + level);
         builder.setView(friendProfile);
         //TODO: List of Friend achievements
 

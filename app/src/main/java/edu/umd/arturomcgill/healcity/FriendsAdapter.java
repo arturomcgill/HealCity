@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import static edu.umd.arturomcgill.healcity.FriendsFragment.TAG;
@@ -20,23 +21,45 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
 
     //  Data
 
-    private List<Friend> friends = new ArrayList<>();
+    private User currentUser;
+    private ArrayList<User> allUsers;
+    private HashMap<String, User> allUsersMap = new HashMap<>();
+    private ArrayList<String> friendsEmails;
+    private ArrayList<User> friends = new ArrayList<>();
 
     private Context context;
     private  FragmentManager fragmentManager;
 
-    public FriendsAdapter(Context context, FragmentManager fragmentManager) {
+    public FriendsAdapter(Context context, FragmentManager fragmentManager, User currentUser) {
         this.context = context;
         this.fragmentManager = fragmentManager;
+
+        this.currentUser = currentUser;
+        this.allUsers = MainActivity.getAllUsers();
+
+        //Mapping of email to user for all
+        for (int i = 0; i < allUsers.size(); i++) {
+            allUsersMap.put(allUsers.get(i).getEmail(), allUsers.get(i));
+        }
+
+        friendsEmails = currentUser.getFriendEmails();
+
         getFriendsData();
     }
 
-    private void getFriendsData() {
+    public void getFriendsData() {
         //Get friends from DB. For now, from array.
 
-        for (int i = 0; i < 10; i++) {
-            friends.add(new Friend("Steve", i, i*100));
+        Log.i(TAG, "GETTING FRIEND DATA");
+        Log.i(TAG, friendsEmails.toString());
+
+        friends.clear();
+
+        for (int i = 0; i < friendsEmails.size(); i++) {
+            friends.add(allUsersMap.get(friendsEmails.get(i)));
         }
+
+
     }
 
     @Override
@@ -50,11 +73,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
 
     @Override
     public void onBindViewHolder(SimpleItemVH holder, int position) {
-        Friend f = friends.get(position);
+        User friend = friends.get(position);
 
-        holder.friendLevel.setText("Level " + f.getLevel());
-        holder.friendName.setText(f.getName());
-        holder.friend = f;
+        holder.friendLevel.setText("Level: " + friend.getLifetimeXP()/1000);
+        holder.friendEmail.setText(friend.getEmail());
+        holder.friend = friend;
     }
 
     @Override
@@ -63,16 +86,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
     }
 
     protected static class SimpleItemVH extends RecyclerView.ViewHolder {
-        Friend friend;
-        TextView friendName;
+        User friend;
+        TextView friendEmail;
         TextView friendLevel;
 
         public SimpleItemVH(View itemView, final FragmentManager fragmentManager) {
             super(itemView);
 
-            friendName = (TextView) itemView.findViewById(R.id.friend_name);
+            friendEmail = (TextView) itemView.findViewById(R.id.friend_name);
             friendLevel = (TextView) itemView.findViewById(R.id.friend_level);
-
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,19 +102,20 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
                     DialogFragment friendProfile = new FriendsProfileModal();
                     Bundle friendInfo = new Bundle();
 
-                    String name = friend.getName();
-                    int level = friend.getLevel();
+                    String name = friend.getEmail();
+                    int level = friend.getLifetimeXP()/1000;
 
 
                     friendInfo.putString("name", name);
                     friendInfo.putInt("level", level);
-                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
+//                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
                     //Just need name (or id) to do query of DB
                     // TODO: OR send Friend object to fragment
 
 
                     friendProfile.setArguments(friendInfo);
 
+                    //TODO Change to user profile popup
                     friendProfile.show(fragmentManager, "friend");
                 }
             });

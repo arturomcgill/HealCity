@@ -34,7 +34,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private final int[] colors = {R.color.bottomtab_0, R.color.bottomtab_1, R.color.bottomtab_2, R.color.bottomtab_3, R.color.bottomtab_4};
+    private final int[] colors = {R.color.bottomtab_0, R.color.bottomtab_4, R.color.bottomtab_1, R.color.bottomtab_2, R.color.colorPrimaryNight};
     private Toolbar toolbar;
     private NoSwipePager viewPager;
     private AHBottomNavigation bottomNavigation;
@@ -45,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity ma;
     private Bundle bundle;
 
-
-
-    private static User currentUser;
+    private static ArrayList<User> allUsers;
 
 
 
@@ -78,7 +76,15 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         String userId = user.getUid();
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        mRef.child("users").child(userId).setValue(currentUser);
+        //   mRef.child("users").child(userId).setValue(currentUser);
+
+        mRef.removeValue();
+        for(int i = 0; i < allUsers.size(); i++)
+        {
+            //Update db
+            User u = allUsers.get(i);
+            mRef.child("users").child(u.getUid()).setValue(u);
+        }
     }
 
 
@@ -90,15 +96,21 @@ public class MainActivity extends AppCompatActivity {
         //mAuth.signOut();
         // getActivity().finish();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users").child(userId);
+        final String userId = user.getUid();
+        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("users");
+        allUsers = new ArrayList<User>();
         this.bundle = savedInstanceState;
 
         mRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                currentUser = dataSnapshot.getValue(User.class);
+                for(DataSnapshot userSnapshot : dataSnapshot.getChildren())
+                {
+                    User u = userSnapshot.getValue(User.class);
+                    allUsers.add(u);
+                }
+
                 onCreateAux(bundle);
             }
 
@@ -142,9 +154,30 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private static User queryForCurrentUser(String userId)
+    {
+
+        for(int i = 0; i < allUsers.size(); i++)
+        {
+            if(userId.equals(allUsers.get(i).getUid()))
+                return allUsers.get(i);
+        }
+
+        return null;
+    }
+
     public static User getCurrentUser()
     {
-        return currentUser;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        final String userId = user.getUid();
+
+        return queryForCurrentUser(userId);
+    }
+
+    public static ArrayList<User> getAllUsers()
+    {
+        return allUsers;
     }
 
     protected void onCreateAux(Bundle savedInstanceState) {
@@ -169,7 +202,13 @@ public class MainActivity extends AppCompatActivity {
         }
         else
         {
-            HealCityLoginActivity.hcla.finish();
+            try {
+                HealCityLoginActivity.hcla.finish();
+            }
+            catch(NullPointerException npe)
+            {
+                //Activity was already killed by android, no need to kill it.
+            }
         }
 
         setupViewPager();
@@ -209,10 +248,10 @@ public class MainActivity extends AppCompatActivity {
         pagerAdapter = new BottomBarAdapter(getSupportFragmentManager());
 
         pagerAdapter.addFragments(createHomeFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createFriendsFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createNearbyFragment(R.color.bottomtab_0));
-        pagerAdapter.addFragments(createShopFragment(R.color.bottomtab_0));
+        pagerAdapter.addFragments(createFriendsFragment(R.color.bottomtab_4));
+        pagerAdapter.addFragments(createGoalsFragment(R.color.bottomtab_1));
+        pagerAdapter.addFragments(createNearbyFragment(R.color.bottomtab_2));
+        pagerAdapter.addFragments(createShopFragment(R.color.colorPrimaryNight));
 
         viewPager.setAdapter(pagerAdapter);
     }
@@ -323,10 +362,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void addBottomNavigationItems() {
         AHBottomNavigationItem item1 = new AHBottomNavigationItem(R.string.tab_1, R.drawable.ic_home, colors[0]);
-        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_friends, colors[0]);
-        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_goals, colors[0]);
-        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_nearby, colors[0]);
-        AHBottomNavigationItem item5 = new AHBottomNavigationItem(R.string.tab_5, R.drawable.ic_shop, colors[0]);
+        AHBottomNavigationItem item2 = new AHBottomNavigationItem(R.string.tab_2, R.drawable.ic_friends, colors[1]);
+        AHBottomNavigationItem item3 = new AHBottomNavigationItem(R.string.tab_3, R.drawable.ic_goals, colors[2]);
+        AHBottomNavigationItem item4 = new AHBottomNavigationItem(R.string.tab_4, R.drawable.ic_nearby, colors[3]);
+        AHBottomNavigationItem item5 = new AHBottomNavigationItem(R.string.tab_5, R.drawable.ic_shop, colors[4]);
 
         bottomNavigation.addItem(item1);
         bottomNavigation.addItem(item2);

@@ -10,6 +10,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -51,8 +52,51 @@ import static android.content.Context.SENSOR_SERVICE;
 
 // -------------------
 
-public class HomeFragment extends Fragment implements SensorEventListener{
-    private CircleProgressBar mCustomProgressBar5;
+import android.*;
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.os.Bundle;
+//import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+
+public class HomeFragment extends Fragment implements SensorEventListener, GoogleApiClient.ConnectionCallbacks,
+        GoogleApiClient.OnConnectionFailedListener, LocationListener {
+
+    private TextView lat, lng;
+    private Button updateLocation, seeMap;
+    private final static int PLAY_SERVICES_RESOLUTION_REQUEST = 1000;
+    private Location mLastLocation;
+    private GoogleApiClient mGoogleApiClient;
+    private boolean mRequestLocationUpdates = false;
+    private LocationRequest mLocationRequest;
+    private static int UPDATE_INTERVAL = 10000;
+    private static int FATEST_INTERVAL = 5000;
+    private static int DISPLACEMENT = 10;
+
+
+    // --------------------------
+    public static CircleProgressBar mCustomProgressBar5;
 
 
     private SensorManager sensorManager;
@@ -61,7 +105,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
     private float[] prev = {0f,0f,0f};
     private File file;
     private Menu menu;
-    private TextView stepView;
+    private TextView stepView, levelView;
     private static final int ABOVE = 1;
     private static final int BELOW = 0;
     private static int CURRENT_STATE = 0;
@@ -93,22 +137,42 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         // Required empty public constructor
     }
 
+    public static int getProgress() {
+        return mCustomProgressBar5.getProgress();
+    }
+
+    public static void addProgress(int i) {
+        int progress = mCustomProgressBar5.getProgress();
+        mCustomProgressBar5.setProgress(progress + 10);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null) {
             color = getArguments().getInt(ARG_COLOR);
         }
 
         currentUser = MainActivity.getCurrentUser();
 
+
     }
 
     @Override
-    public void onPause()
-    {
+    public void onStart() {
+        super.onStart();
+        if (mGoogleApiClient != null) {
+            mGoogleApiClient.connect();
+            displayLocation();
+            Log.d("onStart ", "mGoogleApiClient is built");
+        }
+    }
+
+    @Override
+    public void onPause() {
         super.onPause();
+        stopLocationUpdates();
     }
 
     @Override
@@ -149,6 +213,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 
         //recyclerView = (RecyclerView) rootView.findViewById(R.id.count);
         stepView = rootView.findViewById(R.id.count);
+        levelView = rootView.findViewById(R.id.level);
         sensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
         //stepView = findViewById(R.id.count);
         path =  getActivity().getExternalFilesDir(null);
@@ -232,6 +297,35 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 
 
 
+        // ------------------------------------------
+
+        //updateLocation = (Button) findViewById(R.id.buttonLocationUpdates);
+        seeMap = (Button) rootView.findViewById(R.id.seeMap);
+        lat = (TextView) rootView.findViewById(R.id.latitude);
+        lng = (TextView) rootView.findViewById(R.id.longitude);
+        if (checkPlayServices()) {
+            buildGoogleApiClient();
+            createLocationRequest();
+        }
+//        updateLocation.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                togglePeriodLocationUpdates();
+//
+//            }
+//        });
+
+        seeMap.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), MapsActivity.class);
+                startActivity(i);
+                getActivity().finish();
+            }
+        });
+
         return rootView;
     }
 
@@ -276,8 +370,8 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         fab3.animate().translationY(0);
     }
 
-    private void simulateProgress() {
-        ValueAnimator animator = ValueAnimator.ofInt(0, 54);
+    private void simulateProgress(int start, int end) {
+        ValueAnimator animator = ValueAnimator.ofInt(start, end);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -288,7 +382,7 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         });
 
         //animator.setRepeatCount(ValueAnimator.INFINITE);
-        animator.setDuration(2000);
+        animator.setDuration(1000);
         animator.start();
     }
 
@@ -297,8 +391,10 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         super.onResume();
 
         // Progress Circle
-        mCustomProgressBar5.setProgress(54);
-        simulateProgress();
+        //testing
+        //mCustomProgressBar5.setProgress(80);
+        mCustomProgressBar5.setProgress(currentUser.getPercentage());
+        simulateProgress(0, mCustomProgressBar5.getProgress());
 
         // Total Steps
         sensorManager.registerListener(this,
@@ -306,6 +402,20 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 SensorManager.SENSOR_DELAY_NORMAL);
         super.onResume();
         startTime = System.currentTimeMillis();
+
+        //--------------------
+        checkPlayServices();
+        if (mGoogleApiClient.isConnected() && mRequestLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
     }
 
     @Override
@@ -335,7 +445,10 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         return super.onOptionsItemSelected(item);
     }
 
+    int tempStep = 1;
     private void handleEvent(SensorEvent event) {
+        int level = currentUser.getLevel();
+
         prev = lowPassFilter(event.values,prev);
         Accelerometer raw = new Accelerometer(event.values);
         Accelerometer data = new Accelerometer(prev);
@@ -365,8 +478,33 @@ public class HomeFragment extends Fragment implements SensorEventListener{
             CURRENT_STATE = BELOW;
             PREVIOUS_STATE = CURRENT_STATE;
         }
-
+        tempStep = currentUser.getTotalSteps();
         stepView.setText("" + currentUser.getTotalSteps());
+        levelView.setText("Level: " + level);
+
+        if ((tempStep + 1) % 10 == 0) {
+            int progress = mCustomProgressBar5.getProgress();
+            mCustomProgressBar5.setProgress(progress + 10);
+            currentUser.setPercentage(progress + 10);
+            simulateProgress(progress, progress + 10);
+            tempStep = 1;
+        }
+
+        if (mCustomProgressBar5.getProgress() >= 100 && this.isVisible()) {
+            currentUser.setLevel(currentUser.getLevel() + 1);
+            final Toast toast = Toast.makeText(getActivity(), "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
+            toast.show();
+
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    toast.cancel();
+                }
+            }, 1500);
+            mCustomProgressBar5.setProgress(currentUser.getPercentage() - 100);
+            currentUser.setPercentage(currentUser.getPercentage() - 100);
+        }
     }
 
     private float[] lowPassFilter(float[] input, float[] prev) {
@@ -418,6 +556,135 @@ public class HomeFragment extends Fragment implements SensorEventListener{
                 Color.green(color),
                 Color.blue(color)
         );
+    }
+
+    private void displayLocation() {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (getActivity().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                return;
+            }
+        }else{
+            //Do Your Stuff
+
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        Log.d("LastLocation ", "found");
+        if (mLastLocation != null) {
+            double latitude = mLastLocation.getLatitude();
+            double longitude = mLastLocation.getLongitude();
+            lat.setText("Latitude: " + latitude + "");
+            lng.setText("Longitude: " + longitude + "");
+            currentUser.setLatitude(latitude);
+            currentUser.setLongitude(longitude);
+
+        } else {
+            currentUser.setLatitude(0.0);
+            currentUser.setLongitude(0.0);
+            lat.setText("Latitude: 0.0");
+            lng.setText("Longitude: 0.0");
+        }
+
+
+    }
+
+    protected synchronized void buildGoogleApiClient() {
+        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                .addConnectionCallbacks(this)
+                .addOnConnectionFailedListener(this)
+                .addApi(LocationServices.API).build();
+        Log.d("GoogleApiClient", " is built");
+    }
+
+    protected void createLocationRequest() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(UPDATE_INTERVAL);
+        mLocationRequest.setFastestInterval(FATEST_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        mLocationRequest.setSmallestDisplacement(DISPLACEMENT);
+        Log.d("LocationRequest", " is created");
+    }
+
+    private boolean checkPlayServices() {
+        GoogleApiAvailability apiAvailability = GoogleApiAvailability.getInstance();
+        int resultCode = apiAvailability.isGooglePlayServicesAvailable(getActivity());
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (apiAvailability.isUserResolvableError(resultCode)) {
+                apiAvailability.getErrorDialog(getActivity(), resultCode, PLAY_SERVICES_RESOLUTION_REQUEST)
+                        .show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                getActivity().finish();
+            }
+            return false;
+        }
+        return true;
+    }
+
+
+    protected void startLocationUpdates() {
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+
+            if (getActivity().checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && getActivity().checkSelfPermission(android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for Activity#requestPermissions for more details.
+                return;
+            }
+        }else{
+            //Do Your Stuff
+
+        }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        Log.d("Location was ", "updates");
+    }
+
+    protected void stopLocationUpdates() {
+        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+        displayLocation();
+        if (mRequestLocationUpdates) {
+            startLocationUpdates();
+        }
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mGoogleApiClient.connect();
+    }
+
+
+
+
+    @Override
+    public void onLocationChanged(Location location) {
+        mLastLocation = location;
+
+        Toast.makeText(getActivity().getApplicationContext(), "Location changed!", Toast.LENGTH_SHORT).show();
+
+        displayLocation();
+    }
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i(TAG, "Connection failed: " + connectionResult.getErrorCode());
     }
 
 }

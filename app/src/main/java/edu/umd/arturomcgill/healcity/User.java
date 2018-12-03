@@ -1,24 +1,11 @@
 package edu.umd.arturomcgill.healcity;
 
 import android.graphics.Bitmap;
-import android.support.annotation.NonNull;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.IntStream;
 
 public class User
 {
@@ -31,16 +18,19 @@ public class User
     private ArrayList<String> upgradesPurchased;
     private ArrayList<String> goalsSet;
     private ArrayList<String> goalsMet;
+    private ArrayList<Boolean> dailyGoals;
     private HashMap<Date, Integer> dailyXP;
     private HashMap<Date, Integer> dailyFruitsVeggies;
     private HashMap<Date, Integer> dailySteps;
-    private int lifetimeParks;
+    private int level;
     private int lifetimeVolunteering;
     private int lifetimePublicTransportation;
     private String firstName;
     private String lastName;
     private int points;
-
+    private int percentage;
+    private double latitude;
+    private double longitude;
 
     public User()
     {
@@ -51,11 +41,19 @@ public class User
         upgradesPurchased = new ArrayList<String>();
         goalsMet = new ArrayList<String>();
         goalsSet = new ArrayList<String>();
+        dailyGoals = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dailyGoals.add(false);
+        }
         dailyXP = new HashMap<Date, Integer>();
         dailySteps = new HashMap<Date, Integer>();
         dailyFruitsVeggies = new HashMap<Date, Integer>();
         firstName = "NoFirstName";
         lastName ="NoLastName";
+        percentage = 0;
+        latitude = 0.0;
+        longitude = 0.0;
+        level = 1;
     }
 
     public User(String email, String uid, String firstName, String lastName)
@@ -65,11 +63,61 @@ public class User
         this.uid = uid;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.dailyGoals = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+            dailyGoals.add(false);
+        }
+        percentage = 0;
+        latitude = 0.0;
+        longitude = 0.0;
+        level = 1;
     }
 
     public User(String email, String uid)
     {
         this(email, uid, "NoFirstName", "NoLastName");
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+
+    public ArrayList<Boolean> getDailyGoals() {
+        return dailyGoals;
+    }
+
+    public int getPercentage() {
+        return percentage;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+    }
+
+    public void finishGoal(String s) {
+        if (s.equals("Adventuring Pedestrian")) {
+            dailyGoals.set(0, true);
+        } else if (s.equals("Pinch of Potassium")) {
+            dailyGoals.set(1, true);
+        } else if (s.equals("Mark the Park")) {
+            dailyGoals.set(2, true);
+        } else if (s.equals("Mass Transit Mass Savings")) {
+            dailyGoals.set(3, true);
+        } else { // Recycle
+            dailyGoals.set(4, true);
+        }
     }
 
     public String getEmail()
@@ -252,24 +300,24 @@ public class User
     }
 
 
-    public int getlifetimeParks()
+    public int getLevel()
     {
-        return lifetimeParks;
+        return level;
     }
 
-    public void setlifetimeParks(int lifetimeParks)
+    public void setLevel(int level)
     {
-        this.lifetimeParks = lifetimeParks;
+        this.level = level;
     }
 
     public void resetlifetimeParks()
     {
-        lifetimeParks = 0;
+        level = 0;
     }
 
     public void addlifetimeParks(int parks)
     {
-        lifetimeParks += parks;
+        level += parks;
     }
 
     public int getLifetimeXP()

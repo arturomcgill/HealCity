@@ -10,4 +10,10 @@
     <dimen name="standard_155">155dp</dimen>
 
     <dimen name="activity_margin_half">8dp</dimen>
+
+    <dimen name="image_header_dimen">100dp</dimen>
+    <dimen name="image_header_top_margin">50dp</dimen>
+    <dimen name="login_layout_padding">8dp</dimen>
+    <dimen name="login_layout_padding_top">36dp</dimen>
+    <dimen name="login_button_margin">16dp</dimen>
 </resources>

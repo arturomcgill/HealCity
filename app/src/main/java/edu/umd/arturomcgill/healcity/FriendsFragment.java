@@ -3,12 +3,23 @@ package edu.umd.arturomcgill.healcity;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
 
 public class FriendsFragment extends Fragment {
 
@@ -23,6 +34,12 @@ public class FriendsFragment extends Fragment {
 
     private RecyclerView recyclerView;
 
+    private User currentUser;
+
+    //mimic db call for user list for now
+    private ArrayList<String> allUsersEmails = new ArrayList<>();
+    private ArrayList<User> allUsers;
+
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -34,6 +51,31 @@ public class FriendsFragment extends Fragment {
         if (getArguments() != null) {
             color = getArguments().getInt(ARG_COLOR);
         }
+
+        currentUser = MainActivity.getCurrentUser();
+        allUsers = MainActivity.getAllUsers();
+
+        fillFriendsList();
+
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//
+//        Log.i(TAG, mDatabase.child("users").toString());
+
+
+
+    }
+
+    private void fillFriendsList() {
+        //TODO get list from DB OR do a query search in DB
+
+//        currentUser.resetFriendEmails();
+
+//        Log.i(TAG, "ALL USERS");
+        for (int i = 0; i < allUsers.size(); i++) {
+//            Log.i(TAG, "EMAIL: " + allUsers.get(i).getEmail());
+            allUsersEmails.add(allUsers.get(i).getEmail());
+        }
+
     }
 
     @Override
@@ -46,11 +88,47 @@ public class FriendsFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerView.setBackgroundColor(getLighterColor(color));
 
-        FriendsAdapter adapter = new FriendsAdapter(getContext(), getFragmentManager());
+        final FriendsAdapter adapter = new FriendsAdapter(getContext(), getFragmentManager(), currentUser);
         recyclerView.setAdapter(adapter);
+
+
+        Button addFriend = rootView.findViewById(R.id.addFriend);
+        final TextView friendSearch = rootView.findViewById(R.id.searchFriend);
+
+        addFriend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String friendSearchInput = friendSearch.getText().toString();
+
+                if (currentUser.getFriendEmails().contains(friendSearchInput)) {
+                    Toast.makeText(getContext(), friendSearchInput + " is already your friend", Toast.LENGTH_LONG).show();
+                } else {
+                    //TODO check with DB list or with query
+                    if (allUsersEmails.contains(friendSearchInput)) {
+                        Toast.makeText(getContext(), "Added " + friendSearchInput, Toast.LENGTH_LONG).show();
+                        currentUser.addFriendEmail(friendSearchInput);
+
+                        adapter.getFriendsData();
+                        adapter.notifyDataSetChanged();
+//                        adapter.notifyItemInserted(currentUser.getFriendEmails().size() - 1);
+
+                    } else {
+                        Toast.makeText(getContext(), "Could not find user with email " + friendSearchInput, Toast.LENGTH_LONG).show();
+                    }
+                }
+
+
+            }
+        });
+
+
+
+
+
 
         return rootView;
     }
+
 
 
     /**
