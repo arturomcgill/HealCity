@@ -20,6 +20,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.w3c.dom.Text;
 
 
 public class HealCitySignUpActivity extends AppCompatActivity {
@@ -50,8 +51,6 @@ public class HealCitySignUpActivity extends AppCompatActivity {
         loginLink = (TextView) findViewById(R.id.link_login);
 
         mAuth = FirebaseAuth.getInstance();
-
-
 
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
