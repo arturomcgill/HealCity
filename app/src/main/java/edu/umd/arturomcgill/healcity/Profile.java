@@ -1,0 +1,188 @@
+package edu.umd.arturomcgill.healcity;
+
+import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.support.v4.content.res.ResourcesCompat;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+
+public class Profile extends Activity {
+
+    private User user;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState){
+        super.onCreate(savedInstanceState);
+
+        setContentView(R.layout.fragment_profile);
+
+        user = createTestUser();
+
+
+
+        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lifetime_achievements);
+
+//        if(getIntent().getStringExtra("currentUser") == "true"){
+//            Log.i("SARA", "HERE");
+//            user = MainActivity.getCurrentUser();
+//        } else {
+//            //TODO: the intent that creates this activity then should have two extras, one with tag "currentUser" that would be
+//            // set to false and another one that sends the email of the user that your trying to get
+//            // so from that email, set the user reference
+//        }
+
+        TextView name = (TextView)findViewById(R.id.name);
+        name.setText(user.getFirstName() + " " + user.getLastName());
+
+        ImageView profilePic = (ImageView)findViewById(R.id.profile_picture);
+        Bitmap userPic = user.getProfilePhoto();
+
+        if(userPic == null){
+            profilePic.setImageResource(R.drawable.ic_profile);
+        } else {
+            profilePic.setImageBitmap(userPic);
+        }
+
+
+
+
+        ArrayList<String> achievements = user.getLifetimeAchievements();
+
+        if(achievements == null || achievements.size() == 0) {
+            TextView textView = new TextView(getApplicationContext());
+            textView.setText("No lifetime achievements :( ");
+            textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT));
+            linearLayout.addView(textView);
+        } else {
+            for(int i = 0; i < achievements.size(); i++){
+                LinearLayout innerLayout = new LinearLayout(getApplicationContext());
+                innerLayout.setOrientation(LinearLayout.VERTICAL);
+                innerLayout.setPadding(0,0,50, 0);
+                TextView textView = new TextView(getApplicationContext());
+                textView.setText(achievements.get(i));
+                textView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                ImageView imageView = new ImageView(getApplicationContext());
+//                imageView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+//                        LinearLayout.LayoutParams.WRAP_CONTENT));
+                imageView.setLayoutParams(new LinearLayout.LayoutParams(500, 500));
+                imageView.setPadding(0,40, 0,0);
+                String text = achievements.get(i);
+                if(text.equals("10 fruits and veggies")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruit1, null));
+                } else if(text.equals("50 fruits and veggies")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruitbadge2, null));
+                } else if(text.equals("100 fruits and veggies")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruitbadge3, null));
+                } else if(text.equals("500 fruits and veggies")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruitbadge4, null));
+                } else if(text.equals("50 miles")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.walking1, null));
+                } else if(text.equals("100 miles")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.walking2, null));
+                } else if(text.equals("250 miles")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.run, null));
+                } else if(text.equals("500 miles")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.steps2, null));
+                } else if(text.equals("1 park")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.park1, null));
+                } else if(text.equals("10 parks")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.park3, null));
+                } else if(text.equals("50 parks")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.park, null));
+                } else if(text.equals("1 use of transportation")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bus, null));
+                } else if(text.equals("50 uses of transportation")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bus2, null));
+                } else if(text.equals("100 uses of transportation")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bus3, null));
+                } else if(text.equals("Volunteered 10 times")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer4, null));
+                } else if(text.equals("Volunteered 25 times")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer2, null));
+                } else if(text.equals("Volunteered 100 times")) {
+                    imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer3, null));
+                }
+
+
+                innerLayout.addView(textView);
+                innerLayout.addView(imageView);
+                linearLayout.addView(innerLayout);
+
+
+            }
+
+        }
+
+
+
+
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
+
+        // 80% of screen
+        getWindow().setLayout((int)(width*.7),(int)(height*.7));
+
+    }
+
+    private User createTestUser(){
+
+        User user = MainActivity.getCurrentUser();
+        Date today = null;
+        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            String string = format.format(new Date());
+            today = format.parse(string);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
+        fruits.put(today, 50);
+        user.setFruitsVeggies(fruits);
+        user.setlifetimeParks(10);
+
+        ArrayList<String> achievements = new ArrayList<String>();
+        achievements.add("10 fruits and veggies");
+        achievements.add("50 fruits and veggies");
+        achievements.add("100 fruits and veggies");
+        achievements.add("500 fruits and veggies");
+        achievements.add("50 miles");
+        achievements.add("100 miles");
+        achievements.add("250 miles");
+        achievements.add("500 miles");
+        achievements.add("1 park");
+        achievements.add("10 parks");
+        achievements.add("50 parks");
+        achievements.add("1 use of transportation");
+        achievements.add("50 uses of transportation");
+        achievements.add("100 uses of transportation");
+        achievements.add("Volunteered 10 times");
+        achievements.add("Volunteered 25 times");
+        achievements.add("Volunteered 100 times");
+
+
+        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
+
+        user.setLifetimeAchievements(achievements);
+
+        return user;
+    }
+
+}
