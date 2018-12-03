@@ -361,7 +361,7 @@ public class User
 
     public Bitmap extractBitmap()
     {
-        if(profilePhotoEncoded != null || !profilePhotoEncoded.equals("")) {
+        if(profilePhotoEncoded != null && !profilePhotoEncoded.equals("")) {
             byte[] imagesAsBytes = Base64.decode(profilePhotoEncoded.substring(profilePhotoEncoded.indexOf(",") + 1), Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(imagesAsBytes, 0, imagesAsBytes.length);
         }
