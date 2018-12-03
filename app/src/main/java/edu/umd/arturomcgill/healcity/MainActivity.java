@@ -1,6 +1,7 @@
 package edu.umd.arturomcgill.healcity;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -21,6 +22,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 
 // -------------------
 // -------------------
@@ -100,7 +107,40 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+
+//        createTestUser();
     }
+
+//    private User createTestUser(){
+//
+//        User user = getCurrentUser();
+//        Date today = null;
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//        try {
+//            String string = format.format(new Date());
+//            today = format.parse(string);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
+//        fruits.put(today, 50);
+//        user.setFruitsVeggies(fruits);
+//        user.setlifetimeParks(10);
+//
+//        ArrayList<String> achievements = new ArrayList<String>();
+//        achievements.add("10 fruits and veggies");
+//        achievements.add("50 fruits and veggies");
+//        achievements.add("100 fruits and veggies");
+//        achievements.add("500 fruits and veggies");
+//
+//        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
+//
+//        user.setLifetimeAchievements(achievements);
+//
+//        return user;
+//    }
+
+
 
     public static User getCurrentUser()
     {

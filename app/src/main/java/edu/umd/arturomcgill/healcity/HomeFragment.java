@@ -3,6 +3,7 @@ package edu.umd.arturomcgill.healcity;
 
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -39,8 +40,11 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
+import java.util.Date;
+import java.util.HashMap;
 
 
 import static android.content.Context.SENSOR_SERVICE;
@@ -162,9 +166,12 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentTransaction fragmentTransaction =  getActivity().getSupportFragmentManager().beginTransaction();
-                fragmentTransaction.replace(R.id.coordinator, new ProfileFragment());
-                fragmentTransaction.commit();
+//                FragmentTransaction fragmentTransaction =  getActivity().getSupportFragmentManager().beginTransaction();
+//                fragmentTransaction.replace(R.id.coordinator, new ProfileFragment());
+//                fragmentTransaction.commit();
+                Intent intent = new Intent(getActivity(), Profile.class);
+                intent.putExtra("currentUser", "true");
+                startActivity(intent);
             }
         });
 
@@ -177,8 +184,13 @@ public class HomeFragment extends Fragment implements SensorEventListener{
         fab3 = (FloatingActionButton) content.findViewById(R.id.fab3);
         closeFABMenu();
         fab.setOnClickListener(new View.OnClickListener() {
+
+
+
             @Override
             public void onClick(View view) {
+
+
                 if(!isFABOpen){
                     showFABMenu();
                 }else{
@@ -219,8 +231,36 @@ public class HomeFragment extends Fragment implements SensorEventListener{
 
 
 
+
         return rootView;
     }
+
+//    private void createTestUser(){
+//
+//        User user = MainActivity.getCurrentUser();
+//        Date today = null;
+//        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+//        try {
+//            String string = format.format(new Date());
+//            today = format.parse(string);
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
+//        fruits.put(today, 50);
+//        user.setFruitsVeggies(fruits);
+//        user.setlifetimeParks(10);
+//
+//        ArrayList<String> achievements = new ArrayList<String>();
+//        achievements.add("10 fruits and veggies");
+//        achievements.add("50 fruits and veggies");
+//        achievements.add("100 fruits and veggies");
+//        achievements.add("500 fruits and veggies");
+//
+//        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
+//
+//        user.setLifetimeAchievements(achievements);
+//    }
 
     private void showFABMenu(){
         isFABOpen=true;

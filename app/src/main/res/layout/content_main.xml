@@ -55,6 +55,7 @@
         android:layout_height="wrap_content"
         android:text="Log Out" />
 
+
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab3"
         android:layout_width="45dp"
