@@ -148,9 +148,9 @@ public class User
         return lastName;
     }
 
-    public String getPhoneNumber() { return phoneNumber}
+    public String getPhoneNumber() { return phoneNumber;}
 
-    public String setPhoneNumber(String phoneNumber)
+    public void setPhoneNumber(String phoneNumber)
     {
         this.phoneNumber = phoneNumber;
     }
