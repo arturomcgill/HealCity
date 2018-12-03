@@ -130,7 +130,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
                     if (txtTitle.getText().equals("Adventuring Pedestrian")) {
                         if (currentUser.getTotalSteps() >= 10) {
                             currentUser.finishGoal("Adventuring Pedestrian");
-                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "+16% EXP", Toast.LENGTH_SHORT).show();
                             HomeFragment.addProgress(16);
                             currentUser.setPercentage(currentUser.getPercentage() + 16);
                             button.setText("DONE!");
@@ -149,7 +149,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
 
                     } else if (txtTitle.getText().equals("Pinch of Potassium")) {
                         currentUser.finishGoal("Pinch of Potassium");
-                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "+16% EXP", Toast.LENGTH_SHORT).show();
                         HomeFragment.addProgress(16);
                         currentUser.setPercentage(currentUser.getPercentage() + 16);
                         button.setText("DONE!");
@@ -182,7 +182,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
 
                         if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
                             currentUser.finishGoal("Mark the Park");
-                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "+16% EXP", Toast.LENGTH_SHORT).show();
                             HomeFragment.addProgress(16);
                             currentUser.setPercentage(currentUser.getPercentage() + 16);
                             button.setText("DONE!");
@@ -218,7 +218,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
 
                         if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
                             currentUser.finishGoal("Mass Transit Mass Savings");
-                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "+16% EXP", Toast.LENGTH_SHORT).show();
                             HomeFragment.addProgress(16);
                             currentUser.setPercentage(currentUser.getPercentage() + 16);
                             button.setText("DONE!");
@@ -236,7 +236,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
                         }
                     } else { // Recycle
                         currentUser.finishGoal("Recycle plastic");
-                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, "+16% EXP", Toast.LENGTH_SHORT).show();
                         HomeFragment.addProgress(16);
                         currentUser.setPercentage(currentUser.getPercentage() + 16);
                         button.setText("DONE!");
