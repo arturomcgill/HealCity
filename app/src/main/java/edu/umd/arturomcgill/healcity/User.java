@@ -31,6 +31,7 @@ public class User
     private int lifetimeParks;
     private String firstName;
     private String lastName;
+    private String phoneNumber;
     private int points;
     private int percentage;
     private double latitude;
@@ -42,6 +43,7 @@ public class User
         friendEmails = new ArrayList<String>();
         totalSteps = 0;
         profilePhotoEncoded = null;
+        phoneNumber = null;
         upgradesPurchased = new ArrayList<String>();
         goalsMet = new ArrayList<String>();
         goalsSet = new ArrayList<String>();
@@ -144,6 +146,13 @@ public class User
     public String getLastName()
     {
         return lastName;
+    }
+
+    public String getPhoneNumber() { return phoneNumber;}
+
+    public void setPhoneNumber(String phoneNumber)
+    {
+        this.phoneNumber = phoneNumber;
     }
 
     public ArrayList<String> getLifetimeAchievements()
