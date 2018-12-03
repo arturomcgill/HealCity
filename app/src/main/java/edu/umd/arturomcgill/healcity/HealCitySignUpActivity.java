@@ -25,12 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 public class HealCitySignUpActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
 
-    EditText nameText;
+    EditText firstNameText;
+    EditText lastNameText;
     EditText emailText;
     EditText mobileText;
     EditText passwordText;
     EditText reEnterPasswordText;
-    EditText goalsText;
     Button signupButton;
     TextView loginLink;
     private FirebaseAuth mAuth;
@@ -40,12 +40,12 @@ public class HealCitySignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_heal_city_signup);
         //ButterKnife.bind(this);
-        nameText = (EditText) findViewById(R.id.input_name);
+        firstNameText = (EditText) findViewById(R.id.input_first_name);
+        lastNameText = (EditText) findViewById(R.id.input_last_name);
         emailText = (EditText) findViewById(R.id.input_email);
         mobileText = (EditText) findViewById(R.id.input_mobile);
         passwordText = (EditText) findViewById(R.id.input_password);
         reEnterPasswordText = (EditText) findViewById(R.id.input_reEnterPassword);
-        goalsText = (EditText) findViewById(R.id.input_goals);
         signupButton = (Button) findViewById(R.id.btn_signup);
         loginLink = (TextView) findViewById(R.id.link_login);
 
@@ -142,6 +142,8 @@ public class HealCitySignUpActivity extends AppCompatActivity {
     public boolean validate() {
         boolean valid = true;
 
+        String firstName = firstNameText.getText().toString();
+        String lastName = lastNameText.getText().toString();
         String email = emailText.getText().toString();
         String mobile = mobileText.getText().toString();
         String password = passwordText.getText().toString();
@@ -150,31 +152,61 @@ public class HealCitySignUpActivity extends AppCompatActivity {
 
 
 
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError("enter a valid email address");
+        if(firstName.isEmpty()){
+            firstNameText.setError("first name is required");
             valid = false;
+        }
+        else{
+            firstNameText.setError(null);
+        }
+
+        if(lastName.isEmpty()){
+            lastNameText.setError("last name is required");
+            valid = false;
+        }
+        else{
+            lastNameText.setError(null);
+        }
+        if (email.isEmpty()) {
+            emailText.setError("email is required");
+            valid = false;
+        }
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+                emailText.setError("enter a valid email address");
+                valid = false;
         } else {
             emailText.setError(null);
         }
 
-        if (mobile.isEmpty() || mobile.length() !=10) {
+        if(!mobile.isEmpty() && mobile.length() !=10){
             mobileText.setError("Enter Valid Mobile Number");
             valid = false;
-        } else {
+        }
+        else {
             mobileText.setError(null);
         }
 
-        if (password.isEmpty() || password.length() < 8 || !password.matches(pattern)) {
+        if (password.isEmpty()) {
+            passwordText.setError("password is required");
+            valid = false;
+        }
+        else if (password.length() < 8 || !password.matches(pattern)){
             passwordText.setError("not a valid password");
             valid = false;
-        } else {
+        }
+        else{
             passwordText.setError(null);
         }
 
-        if (!(reEnterPassword.equals(password))) {
+        if (reEnterPassword.isEmpty() || !(reEnterPassword.equals(password))) {
+            reEnterPasswordText.setError("password is required");
+            valid = false;
+        }
+        else if (!(reEnterPassword.equals(password))){
             reEnterPasswordText.setError("Passwords Do not match");
             valid = false;
-        } else {
+        }
+        else {
             reEnterPasswordText.setError(null);
         }
 

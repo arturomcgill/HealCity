@@ -15,6 +15,8 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -33,7 +35,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -49,11 +53,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final float SMALLEST_DISPLACEMENT = 0.15F; //quarter of a meter
     private ProgressDialog pDialog;
     private Button back;
+    private ArrayList<LatLng> parkList = new ArrayList<LatLng>();
+    private Button tree;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         back = (Button) findViewById(R.id.back);
+        tree = (Button) findViewById(R.id.parks);
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
         }
@@ -69,6 +80,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 startActivity(i);
                 finish();
             }
+        });
+
+        tree.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                addParks();
+                addParkMarkers();
+            }
+
         });
     }
 
@@ -140,15 +161,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mCurrentLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         LatLng latLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        checkParkLocation();
         addMarker();
     }
+
     private void addMarker() {
         MarkerOptions options = new MarkerOptions();
         IconGenerator iconFactory = new IconGenerator(this);
         iconFactory.setStyle(IconGenerator.STYLE_ORANGE);
         options.icon(BitmapDescriptorFactory.fromBitmap(iconFactory.makeIcon(mLastUpdateTime)));
         options.anchor(iconFactory.getAnchorU(), iconFactory.getAnchorV());
-
         LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
         options.position(currentLatLng);
         Marker mapMarker = mMap.addMarker(options);
@@ -161,6 +183,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Log.d(TAG, "Zoom done.............................");
 
     }
+
+    private void addParkMarkers() {
+        MarkerOptions options = new MarkerOptions();
+        String[] parkArray = getResources().getStringArray(R.array.park_names);
+        for (int i = 0; i < parkList.size(); i++) {
+            mMap.addMarker(options.position(parkList.get(i)).title(parkArray[i]));
+        }
+    }
+
+    void checkParkLocation() {
+        final LatLng currentLatLng = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                for (int i = 0; i < parkList.size(); i++) {
+                    if (currentLatLng.equals(parkList.get(i))) {
+                        User user = MainActivity.getCurrentUser();
+                        user.addlifetimeParks(1);
+                        Toast.makeText(getApplicationContext(), "You just went to a park!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "You're not at this park.", Toast.LENGTH_SHORT).show();
+                    }
+                }
+                return true;
+            }
+        });
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -175,6 +225,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    protected void addParks() {
+        parkList.add(new LatLng(38.9623, -76.9693));
+        parkList.add(new LatLng(38.9549, -76.9587));
+        parkList.add(new LatLng(38.9628, -76.9472));
+        parkList.add(new LatLng(38.9486, -76.9391));
+        parkList.add(new LatLng(38.9465, -76.9466));
+    }
 
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this,

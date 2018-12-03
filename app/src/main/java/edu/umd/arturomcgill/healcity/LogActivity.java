@@ -90,7 +90,7 @@ public class LogActivity extends Activity {
                         e.printStackTrace();
                     }
                     if(today != null) {
-                        if (dailyFruitsVeggies.get(today) == null){
+                        if (dailyFruitsVeggies.get(today.toString()) == null){
                             dailyFruitsVeggies.put(today.toString(), result);
                         } else {
                             dailyFruitsVeggies.put(today.toString(), dailyFruitsVeggies.get(today) + result);

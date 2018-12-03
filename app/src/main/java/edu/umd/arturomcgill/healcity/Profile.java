@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
@@ -29,7 +32,13 @@ public class Profile extends Activity {
 
         setContentView(R.layout.fragment_profile);
 
-        user = createTestUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        String uid = firebaseUser.getUid();
+        int index = MainActivity.getAllUsers().indexOf(MainActivity.getCurrentUser());
+
+        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
+  //      MainActivity.getAllUsers().set(index, createTestUser());
 
 
 
@@ -57,7 +66,7 @@ public class Profile extends Activity {
         name.setText(user.getFirstName() + " " + user.getLastName());
 
         ImageView profilePic = (ImageView)findViewById(R.id.profile_picture);
-        Bitmap userPic =  null; //user.getProfilePhoto();
+        Bitmap userPic = user.extractBitmap();
 
         if(userPic == null){
             profilePic.setImageResource(R.drawable.ic_profile);
@@ -187,7 +196,7 @@ public class Profile extends Activity {
         achievements.add("Volunteered 100 hours");
 
 
-        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
+        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.zipcar));
 
         user.setLifetimeAchievements(achievements);
 
