@@ -57,7 +57,7 @@ public class Profile extends Activity {
         name.setText(user.getFirstName() + " " + user.getLastName());
 
         ImageView profilePic = (ImageView)findViewById(R.id.profile_picture);
-        Bitmap userPic = user.getProfilePhoto();
+        Bitmap userPic =  null; //user.getProfilePhoto();
 
         if(userPic == null){
             profilePic.setImageResource(R.drawable.ic_profile);
@@ -99,13 +99,13 @@ public class Profile extends Activity {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruitbadge3, null));
                 } else if(text.equals("500 fruits and veggies")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.fruitbadge4, null));
-                } else if(text.equals("50 miles")) {
+                } else if(text.equals("100000 steps")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.walking1, null));
-                } else if(text.equals("100 miles")) {
+                } else if(text.equals("500000 steps")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.walking2, null));
-                } else if(text.equals("250 miles")) {
+                } else if(text.equals("1000000 steps")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.run, null));
-                } else if(text.equals("500 miles")) {
+                } else if(text.equals("2000000 steps")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.steps2, null));
                 } else if(text.equals("1 park")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.park1, null));
@@ -119,11 +119,11 @@ public class Profile extends Activity {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bus2, null));
                 } else if(text.equals("100 uses of transportation")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.bus3, null));
-                } else if(text.equals("Volunteered 10 times")) {
+                } else if(text.equals("Volunteered 10 hours")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer4, null));
-                } else if(text.equals("Volunteered 25 times")) {
+                } else if(text.equals("Volunteered 25 hours")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer2, null));
-                } else if(text.equals("Volunteered 100 times")) {
+                } else if(text.equals("Volunteered 100 hours")) {
                     imageView.setImageDrawable(ResourcesCompat.getDrawable(getResources(), R.drawable.volunteer3, null));
                 }
 
@@ -162,8 +162,8 @@ public class Profile extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
-        fruits.put(today, 50);
+        HashMap<String, Integer> fruits = new HashMap<String, Integer>();
+        fruits.put(today.toString(), 50);
         user.setFruitsVeggies(fruits);
         user.addlifetimeParks(10);
 
@@ -172,19 +172,19 @@ public class Profile extends Activity {
         achievements.add("50 fruits and veggies");
         achievements.add("100 fruits and veggies");
         achievements.add("500 fruits and veggies");
-        achievements.add("50 miles");
-        achievements.add("100 miles");
-        achievements.add("250 miles");
-        achievements.add("500 miles");
+        achievements.add("100000 steps");
+        achievements.add("500000 steps");
+        achievements.add("1000000 steps");
+        achievements.add("2000000 steps");
         achievements.add("1 park");
         achievements.add("10 parks");
         achievements.add("50 parks");
         achievements.add("1 use of transportation");
         achievements.add("50 uses of transportation");
         achievements.add("100 uses of transportation");
-        achievements.add("Volunteered 10 times");
-        achievements.add("Volunteered 25 times");
-        achievements.add("Volunteered 100 times");
+        achievements.add("Volunteered 10 hours");
+        achievements.add("Volunteered 25 hours");
+        achievements.add("Volunteered 100 hours");
 
 
         user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
