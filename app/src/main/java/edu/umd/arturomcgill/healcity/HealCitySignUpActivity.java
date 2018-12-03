@@ -56,7 +56,8 @@ public class HealCitySignUpActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup(emailText.getText().toString(), passwordText.getText().toString());
+                signup(firstNameText.getText().toString(), lastNameText.getText().toString(),
+                        emailText.getText().toString(), passwordText.getText().toString());
             }
         });
 
@@ -72,7 +73,7 @@ public class HealCitySignUpActivity extends AppCompatActivity {
         });
     }
 
-    public void signup(final String email, final String password) {
+    public void signup(final String firstName, final String lastName, final String email, final String password) {
         Log.d(TAG, "Signup");
 
         if (!validate()) {
@@ -95,7 +96,7 @@ public class HealCitySignUpActivity extends AppCompatActivity {
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userId = user.getUid();
                             DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-                            User userAccount = new User(email, userId);
+                            User userAccount = new User(email, userId, firstName, lastName);
                             mRef.child("users").child(userId).setValue(userAccount);
                         } else {
                             // If sign in fails, display a message to the user.
