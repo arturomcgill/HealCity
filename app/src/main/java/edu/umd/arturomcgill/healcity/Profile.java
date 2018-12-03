@@ -11,6 +11,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import org.w3c.dom.Text;
 
 import java.text.ParseException;
@@ -29,7 +32,13 @@ public class Profile extends Activity {
 
         setContentView(R.layout.fragment_profile);
 
-        user = createTestUser();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        String uid = firebaseUser.getUid();
+        int index = MainActivity.getAllUsers().indexOf(MainActivity.getCurrentUser());
+
+        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
+  //      MainActivity.getAllUsers().set(index, createTestUser());
 
 
 
@@ -54,12 +63,13 @@ public class Profile extends Activity {
         }
 
         TextView name = (TextView)findViewById(R.id.name);
-        name.setText(user.getFirstName() + " " + user.getLastName());
+        name.setText(MainActivity.getCurrentUser().getFirstName() + " " + MainActivity.getCurrentUser().getLastName());
 
         ImageView profilePic = (ImageView)findViewById(R.id.profile_picture);
-        Bitmap userPic = null;//user.getProfilePhoto();
+        Bitmap userPic = MainActivity.getCurrentUser().extractBitmap();
 
-        if(userPic == null){
+        if(userPic == null)
+        {
             profilePic.setImageResource(R.drawable.ic_profile);
         } else {
             profilePic.setImageBitmap(userPic);
@@ -68,7 +78,7 @@ public class Profile extends Activity {
 
 
 
-        ArrayList<String> achievements = user.getLifetimeAchievements();
+        ArrayList<String> achievements = MainActivity.getCurrentUser().getLifetimeAchievements();
 
         if(achievements == null || achievements.size() == 0) {
             TextView textView = new TextView(getApplicationContext());
@@ -187,7 +197,7 @@ public class Profile extends Activity {
         achievements.add("Volunteered 100 times");
 
 
-        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.stickfigure));
+        user.setProfilePhoto(BitmapFactory.decodeResource(getResources(),R.drawable.zipcar));
 
         user.setLifetimeAchievements(achievements);
 

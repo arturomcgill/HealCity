@@ -1,7 +1,10 @@
 package edu.umd.arturomcgill.healcity;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.util.Base64;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +15,7 @@ public class User
     private String email;
     private String uid;
     private int totalSteps;
-    private Bitmap profilePhoto;
+    private String profilePhotoEncoded;
     private ArrayList<String> lifetimeAchievements;
     private ArrayList<String> friendEmails;
     private ArrayList<String> upgradesPurchased;
@@ -37,7 +40,7 @@ public class User
         lifetimeAchievements = new ArrayList<String>();
         friendEmails = new ArrayList<String>();
         totalSteps = 0;
-        profilePhoto = null;
+        profilePhotoEncoded = null;
         upgradesPurchased = new ArrayList<String>();
         goalsMet = new ArrayList<String>();
         goalsSet = new ArrayList<String>();
@@ -337,20 +340,39 @@ public class User
         }
     }
 
-  /*  public Bitmap getProfilePhoto()
+    public String getProfilePhotoEncoded()
     {
-        return profilePhoto;
-    }*/
+        return profilePhotoEncoded;
+    }
 
-    public void setProfilePhoto(Bitmap photo)
+    public void setProfilePhotoEncoded(String photoEncoded)
     {
-        this.profilePhoto = photo;
+        this.profilePhotoEncoded = photoEncoded;
+    }
+
+    public void setProfilePhoto(Bitmap bitmap)
+    {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+        byte[] imageAsBytes = byteArrayOutputStream.toByteArray();
+
+        setProfilePhotoEncoded(Base64.encodeToString(imageAsBytes, Base64.DEFAULT));
+    }
+
+    public Bitmap extractBitmap()
+    {
+        if(profilePhotoEncoded != null || !profilePhotoEncoded.equals("")) {
+            byte[] imagesAsBytes = Base64.decode(profilePhotoEncoded.substring(profilePhotoEncoded.indexOf(",") + 1), Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(imagesAsBytes, 0, imagesAsBytes.length);
+        }
+        else
+            return null;
     }
 
     public void resetProfilePhoto()
     {
 
-        this.profilePhoto = null;
+        this.profilePhotoEncoded = null;
     }
 
     public ArrayList<String> getUpgradesPurchased()
