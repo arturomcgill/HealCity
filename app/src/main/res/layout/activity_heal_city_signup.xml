@@ -23,7 +23,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="FirstName" />
+                android:hint="First Name" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Name Label -->
@@ -36,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="LastName" />
+                android:hint="Last Name" />
         </android.support.design.widget.TextInputLayout>
 
 
@@ -67,6 +67,7 @@
                 android:hint="Mobile Number" />
         </android.support.design.widget.TextInputLayout>
 
+
         <!-- Password Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -77,8 +78,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Password"/>
+                android:hint="Password ( at least 8 characters, letter, capital letter, number)"/>
         </android.support.design.widget.TextInputLayout>
+
 
         <!-- Password Re-enter Label -->
         <android.support.design.widget.TextInputLayout
