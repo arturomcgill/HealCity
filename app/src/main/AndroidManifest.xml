@@ -28,7 +28,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/MyTheme">
-        <activity android:name=".MainActivity" android:launchMode="singleInstance">
+        <activity android:name=".MainActivity" android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.DEFAULT" />
             </intent-filter>
@@ -55,6 +55,10 @@
         </activity>
         <activity android:name=".LogActivity"
             android:theme="@style/AppTheme.CustomTheme">
+
+            <intent-filter>
+                <action android:name="android.intent.action.DEFAULT" />
+            </intent-filter>
 
         </activity>
 
