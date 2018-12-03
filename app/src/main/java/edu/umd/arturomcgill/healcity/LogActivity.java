@@ -66,6 +66,20 @@ public class LogActivity extends Activity {
 
 
                     User user = MainActivity.getCurrentUser();
+
+                    int num = user.getLifetimeFruitsVeggies();
+
+                    if(num < 50 && num + result >= 50){
+                        user.addLifetimeAchievement("50 fruits and veggies");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    } else if(num < 100 && num + result >= 100){
+                        user.addLifetimeAchievement("100 fruits and veggies");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    } else if(num < 500 && num + result >= 500){
+                        user.addLifetimeAchievement("500 fruits and veggies");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    }
+
                     HashMap<String,Integer> dailyFruitsVeggies = user.getFruitsVeggies();
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                     Date today = null;
@@ -76,8 +90,7 @@ public class LogActivity extends Activity {
                         e.printStackTrace();
                     }
                     if(today != null) {
-                        if (dailyFruitsVeggies.get(today.toString()
-                        ) == null){
+                        if (dailyFruitsVeggies.get(today.toString()) == null){
                             dailyFruitsVeggies.put(today.toString(), result);
                         } else {
                             dailyFruitsVeggies.put(today.toString(), dailyFruitsVeggies.get(today) + result);
@@ -114,6 +127,19 @@ public class LogActivity extends Activity {
                     int xp = numHours * 200;
 
                     User user = MainActivity.getCurrentUser();
+                    int totalHours = user.getLifetimeVolunteering();
+
+                    if(totalHours < 10 && totalHours + numHours >= 10){
+                        user.addLifetimeAchievement("Volunteered 10 hours");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    } else if(totalHours < 25 && totalHours + numHours >= 25){
+                        user.addLifetimeAchievement("Volunteered 25 hours");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    } else if(totalHours < 100 && totalHours + numHours >= 100){
+                        user.addLifetimeAchievement("Volunteered 100 hours");
+                        Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                    }
+
                     user.addlifetimeVolunteering(numHours);
 
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -126,7 +152,7 @@ public class LogActivity extends Activity {
                     }
 
                     user.addPoints(xp);
-                    user.addDailyXPToDate(today, xp);
+                    user.addDailyXPToDate(today.toString(), xp);
                     Toast.makeText(getApplicationContext(), xp + " points and xp added", Toast.LENGTH_LONG).show();
 
 
@@ -152,6 +178,20 @@ public class LogActivity extends Activity {
                             ((RadioButton)(findViewById(R.id.radioButton3))).isChecked()) {
 
                         User user = MainActivity.getCurrentUser();
+
+                        int num = user.getlifetimePublicTransportation();
+
+                        if(num < 1 && num + 1 >= 1){
+                            user.addLifetimeAchievement("1 use of transportation");
+                            Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                        } else if(num < 50 && num + 1 > 50) {
+                            user.addLifetimeAchievement("50 uses of transportation");
+                            Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                        } else if(num < 100 && num + 1 > 100){
+                            user.addLifetimeAchievement("100 uses of transportation");
+                            Toast.makeText(getApplicationContext(), "New badge added", Toast.LENGTH_LONG).show();
+                        }
+
                         user.addlifetimePublicTransportation(1);
 
                         SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
@@ -166,7 +206,7 @@ public class LogActivity extends Activity {
                         int xp = 50;
 
                         user.addPoints(xp);
-                        user.addDailyXPToDate(today, xp);
+                        user.addDailyXPToDate(today.toString(), xp);
                         Toast.makeText(getApplicationContext(), xp + " points and xp added", Toast.LENGTH_LONG).show();
 
 
