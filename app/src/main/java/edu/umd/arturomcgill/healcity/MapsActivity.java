@@ -200,7 +200,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 for (int i = 0; i < parkList.size(); i++) {
                     if (currentLatLng.equals(parkList.get(i))) {
                         User user = MainActivity.getCurrentUser();
-                        user.addlifetimeParks(1);
+                        user.addLifetimeParks(1);
                         Toast.makeText(getApplicationContext(), "You just went to a park!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "You're not at this park.", Toast.LENGTH_SHORT).show();

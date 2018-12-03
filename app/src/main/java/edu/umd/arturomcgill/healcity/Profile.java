@@ -174,7 +174,7 @@ public class Profile extends Activity {
         HashMap<String, Integer> fruits = new HashMap<String, Integer>();
         fruits.put(today.toString(), 50);
         user.setFruitsVeggies(fruits);
-        user.addlifetimeParks(10);
+        user.addLifetimeParks(10);
 
         ArrayList<String> achievements = new ArrayList<String>();
         achievements.add("10 fruits and veggies");
