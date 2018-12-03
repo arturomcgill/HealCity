@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
 
 
     // --------------------------
-    private CircleProgressBar mCustomProgressBar5;
+    public static CircleProgressBar mCustomProgressBar5;
 
 
     private SensorManager sensorManager;
@@ -124,6 +124,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         // Required empty public constructor
     }
 
+    public static int getProgress() {
+        return mCustomProgressBar5.getProgress();
+    }
+
+    public static void addProgress(int i) {
+        int progress = mCustomProgressBar5.getProgress();
+        mCustomProgressBar5.setProgress(progress + 10);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -237,7 +245,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         return rootView;
     }
 
-    private void simulateProgress(int start, int end) {
+    private static void simulateProgress(int start, int end) {
         ValueAnimator animator = ValueAnimator.ofInt(start, end);
 
         animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -259,8 +267,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
 
         // Progress Circle
         //testing
-        mCustomProgressBar5.setProgress(80);
-        mCustomProgressBar5.setProgress(mCustomProgressBar5.getProgress());
+        //mCustomProgressBar5.setProgress(80);
+        mCustomProgressBar5.setProgress(currentUser.getPercentage());
         simulateProgress(0, mCustomProgressBar5.getProgress());
 
         // Total Steps
@@ -313,9 +321,9 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
     }
 
     int tempStep = 1;
-    int level = 1;
-
     private void handleEvent(SensorEvent event) {
+        int level = currentUser.getLevel();
+
         prev = lowPassFilter(event.values,prev);
         Accelerometer raw = new Accelerometer(event.values);
         Accelerometer data = new Accelerometer(prev);
@@ -352,13 +360,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         if ((tempStep + 1) % 10 == 0) {
             int progress = mCustomProgressBar5.getProgress();
             mCustomProgressBar5.setProgress(progress + 10);
+            currentUser.setPercentage(progress + 10);
             simulateProgress(progress, progress + 10);
             tempStep = 1;
         }
 
-        if (mCustomProgressBar5.getProgress() >= 100) {
-            level++;
-            final Toast toast = Toast.makeText(getActivity(), "Leveled up to level " + level, Toast.LENGTH_SHORT);
+        if (mCustomProgressBar5.getProgress() >= 100 && this.isVisible()) {
+            currentUser.setLevel(currentUser.getLevel() + 1);
+            final Toast toast = Toast.makeText(getActivity(), "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
             toast.show();
 
             Handler handler = new Handler();
@@ -368,7 +377,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
                     toast.cancel();
                 }
             }, 1500);
-            mCustomProgressBar5.setProgress(0);
+            mCustomProgressBar5.setProgress(currentUser.getPercentage() - 100);
+            currentUser.setPercentage(currentUser.getPercentage() - 100);
         }
     }
 
@@ -449,10 +459,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
             double longitude = mLastLocation.getLongitude();
             lat.setText("Latitude: " + latitude + "");
             lng.setText("Longitude: " + longitude + "");
+            currentUser.setLatitude(latitude);
+            currentUser.setLongitude(longitude);
 
         } else {
-            lat.setText("0.0");
-            lng.setText("0.0");
+            currentUser.setLatitude(0.0);
+            currentUser.setLongitude(0.0);
+            lat.setText("Latitude: 0.0");
+            lng.setText("Longitude: 0.0");
         }
 
 
