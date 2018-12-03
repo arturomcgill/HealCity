@@ -229,6 +229,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         profileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
 //                FragmentTransaction fragmentTransaction =  getActivity().getSupportFragmentManager().beginTransaction();
 //                fragmentTransaction.replace(R.id.coordinator, new ProfileFragment());
 //                fragmentTransaction.commit();

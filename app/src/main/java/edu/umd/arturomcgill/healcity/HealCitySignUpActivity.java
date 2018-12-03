@@ -130,6 +130,8 @@ public class HealCitySignUpActivity extends AppCompatActivity {
     public void onSignupSuccess() {
         signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
+        Intent intent = new Intent(HealCitySignUpActivity.this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
 
