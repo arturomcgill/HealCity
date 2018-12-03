@@ -40,9 +40,6 @@ public class MainActivity extends AppCompatActivity {
     public static MainActivity ma;
     private Bundle bundle;
 
-
-
-    private static User currentUser;
     private static ArrayList<User> allUsers;
 
 
@@ -109,8 +106,6 @@ public class MainActivity extends AppCompatActivity {
                     allUsers.add(u);
                 }
 
-                currentUser = queryForCurrentUser(userId);
-
                 onCreateAux(bundle);
             }
 
@@ -121,8 +116,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private User queryForCurrentUser(String userId)
+    private static User queryForCurrentUser(String userId)
     {
+
         for(int i = 0; i < allUsers.size(); i++)
         {
             if(userId.equals(allUsers.get(i).getUid()))
@@ -134,7 +130,11 @@ public class MainActivity extends AppCompatActivity {
 
     public static User getCurrentUser()
     {
-        return currentUser;
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        FirebaseUser user = mAuth.getCurrentUser();
+        final String userId = user.getUid();
+
+        return queryForCurrentUser(userId);
     }
 
     public static ArrayList<User> getAllUsers()
