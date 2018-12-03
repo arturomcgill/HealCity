@@ -164,76 +164,76 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.SimpleItemVH
                         }
                     } else if (txtTitle.getText().equals("Mark the Park")) {
 
-                        currentUser.finishGoal("Mark the Park");
-                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
-                        HomeFragment.addProgress(16);
-                        currentUser.setPercentage(currentUser.getPercentage() + 16);
-                        button.setText("DONE!");
-                        button.setClickable(false);
-                        button.setBackgroundColor(Color.parseColor("#6CCC3D"));
-
-                        if (currentUser.getPercentage() >= 100) {
-                            currentUser.setLevel(currentUser.getLevel() + 1);
-                            final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
-                            toast.show();
-                            currentUser.setPercentage(currentUser.getPercentage() - 100);
-                        }
-
-
-//                        if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
-//                            currentUser.finishGoal("Mark the Park");
-//                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
-//                            HomeFragment.addProgress(16);
-//                            currentUser.setPercentage(currentUser.getPercentage() + 16);
-//                            button.setText("DONE!");
-//                            button.setClickable(false);
-//                            button.setBackgroundColor(Color.parseColor("#6CCC3D"));
+//                        currentUser.finishGoal("Mark the Park");
+//                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+//                        HomeFragment.addProgress(16);
+//                        currentUser.setPercentage(currentUser.getPercentage() + 16);
+//                        button.setText("DONE!");
+//                        button.setClickable(false);
+//                        button.setBackgroundColor(Color.parseColor("#6CCC3D"));
 //
-//                            if (currentUser.getPercentage() >= 100) {
-//                                currentUser.setLevel(currentUser.getLevel() + 1);
-//                                final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
-//                                toast.show();
-//                                currentUser.setPercentage(currentUser.getPercentage() - 100);
-//                            }
-//                        } else {
-//                            Toast.makeText(context, "You are not at a park.", Toast.LENGTH_SHORT).show();
+//                        if (currentUser.getPercentage() >= 100) {
+//                            currentUser.setLevel(currentUser.getLevel() + 1);
+//                            final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
+//                            toast.show();
+//                            currentUser.setPercentage(currentUser.getPercentage() - 100);
 //                        }
+
+
+                        if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
+                            currentUser.finishGoal("Mark the Park");
+                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                            HomeFragment.addProgress(16);
+                            currentUser.setPercentage(currentUser.getPercentage() + 16);
+                            button.setText("DONE!");
+                            button.setClickable(false);
+                            button.setBackgroundColor(Color.parseColor("#6CCC3D"));
+
+                            if (currentUser.getPercentage() >= 100) {
+                                currentUser.setLevel(currentUser.getLevel() + 1);
+                                final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
+                                toast.show();
+                                currentUser.setPercentage(currentUser.getPercentage() - 100);
+                            }
+                        } else {
+                            Toast.makeText(context, "You are not at a park.", Toast.LENGTH_SHORT).show();
+                        }
                     } else if (txtTitle.getText().equals("Mass Transit Mass Savings")) {
 
-                        currentUser.finishGoal("Mass Transit Mass Savings");
-                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
-                        HomeFragment.addProgress(16);
-                        currentUser.setPercentage(currentUser.getPercentage() + 16);
-                        button.setText("DONE!");
-                        button.setClickable(false);
-                        button.setBackgroundColor(Color.parseColor("#6CCC3D"));
-
-                        if (currentUser.getPercentage() >= 100) {
-                            currentUser.setLevel(currentUser.getLevel() + 1);
-                            final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
-                            toast.show();
-                            currentUser.setPercentage(currentUser.getPercentage() - 100);
-                        }
-
-
-//                        if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
-//                            currentUser.finishGoal("Mass Transit Mass Savings");
-//                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
-//                            HomeFragment.addProgress(16);
-//                            currentUser.setPercentage(currentUser.getPercentage() + 16);
-//                            button.setText("DONE!");
-//                            button.setClickable(false);
-//                            button.setBackgroundColor(Color.parseColor("#6CCC3D"));
+//                        currentUser.finishGoal("Mass Transit Mass Savings");
+//                        Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+//                        HomeFragment.addProgress(16);
+//                        currentUser.setPercentage(currentUser.getPercentage() + 16);
+//                        button.setText("DONE!");
+//                        button.setClickable(false);
+//                        button.setBackgroundColor(Color.parseColor("#6CCC3D"));
 //
-//                            if (currentUser.getPercentage() >= 100) {
-//                                currentUser.setLevel(currentUser.getLevel() + 1);
-//                                final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
-//                                toast.show();
-//                                currentUser.setPercentage(currentUser.getPercentage() - 100);
-//                            }
-//                        } else {
-//                            Toast.makeText(context, "You are not currently at a public transportation area", Toast.LENGTH_SHORT).show();
+//                        if (currentUser.getPercentage() >= 100) {
+//                            currentUser.setLevel(currentUser.getLevel() + 1);
+//                            final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
+//                            toast.show();
+//                            currentUser.setPercentage(currentUser.getPercentage() - 100);
 //                        }
+
+
+                        if (currentUser.getLatitude() > 30 && currentUser.getLatitude() < 45 && currentUser.getLongitude() > -80 && currentUser.getLongitude() < -70) {
+                            currentUser.finishGoal("Mass Transit Mass Savings");
+                            Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();
+                            HomeFragment.addProgress(16);
+                            currentUser.setPercentage(currentUser.getPercentage() + 16);
+                            button.setText("DONE!");
+                            button.setClickable(false);
+                            button.setBackgroundColor(Color.parseColor("#6CCC3D"));
+
+                            if (currentUser.getPercentage() >= 100) {
+                                currentUser.setLevel(currentUser.getLevel() + 1);
+                                final Toast toast = Toast.makeText(context, "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
+                                toast.show();
+                                currentUser.setPercentage(currentUser.getPercentage() - 100);
+                            }
+                        } else {
+                            Toast.makeText(context, "You are not currently at a public transportation area", Toast.LENGTH_SHORT).show();
+                        }
                     } else { // Recycle
                         currentUser.finishGoal("Recycle plastic");
                         Toast.makeText(context, "+18% EXP", Toast.LENGTH_SHORT).show();

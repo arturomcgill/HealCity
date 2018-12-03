@@ -85,10 +85,23 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
 
     private FirebaseAuth mAuth;
 
+
+
+    private final String TAG2 = "FirebaseDebugging";
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        if(MainActivity.ma != null)
+        {
+            Log.i(TAG2, "Killing main activity");
+            MainActivity.ma.finish();
+        }
+
         mAuth = FirebaseAuth.getInstance();
 
         hcla = this;
@@ -96,8 +109,13 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
         //Already logged in
         if(mAuth.getCurrentUser() != null)
         {
-            Intent intent = new Intent(HealCityLoginActivity.this, MainActivity.class);
-            HealCityLoginActivity.this.startActivity(intent);
+                Log.i(TAG2, "Firebase logged in");
+                Intent intent = new Intent(HealCityLoginActivity.this, MainActivity.class);
+                HealCityLoginActivity.this.startActivity(intent);
+        }
+        else
+        {
+            Log.i(TAG2, "Firebase logged out");
         }
 
         setContentView(R.layout.activity_heal_city_login);
@@ -376,6 +394,17 @@ public class HealCityLoginActivity extends AppCompatActivity implements LoaderCa
                     }
                 });
         // [END create_user_with_email]
+    }
+
+    public static void endEverything()
+    {
+        //Wait half a second before closing
+        long halfSecond = System.currentTimeMillis() + 500;
+        while(System.currentTimeMillis() < halfSecond)
+        {
+
+        }
+        System.exit(0);
     }
 
     private void signIn(String email, String password)

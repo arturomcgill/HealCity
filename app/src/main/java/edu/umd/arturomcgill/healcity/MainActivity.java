@@ -11,6 +11,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigation;
 import com.aurelhubert.ahbottomnavigation.AHBottomNavigationItem;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static ArrayList<User> allUsers;
 
+    private final String TAG = "FirebaseDebugging";
 
 
     private boolean notificationVisible = false;
@@ -57,16 +59,7 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    public void endEverything()
-    {
-        //Wait half a second before closing
-        long halfSecond = System.currentTimeMillis() + 500;
-        while(System.currentTimeMillis() < halfSecond)
-        {
 
-        }
-        System.exit(0);
-    }
 
     @Override
     protected void onPause()
@@ -74,16 +67,20 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
-        String userId = user.getUid();
-        DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
-        //   mRef.child("users").child(userId).setValue(currentUser);
 
-        mRef.removeValue();
-        for(int i = 0; i < allUsers.size(); i++)
+        //Will only happen if you're kicked out of main activity due to not being logged in
+        if(user != null)
         {
-            //Update db
-            User u = allUsers.get(i);
-            mRef.child("users").child(u.getUid()).setValue(u);
+            String userId = user.getUid();
+            DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
+            //   mRef.child("users").child(userId).setValue(currentUser);
+
+            mRef.removeValue();
+            for (int i = 0; i < allUsers.size(); i++) {
+                //Update db
+                User u = allUsers.get(i);
+                mRef.child("users").child(u.getUid()).setValue(u);
+            }
         }
     }
 
@@ -91,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "In MainActivity.onCreate()");
         //Get the step count from database
+        ma = this;
         FirebaseAuth mAuth = FirebaseAuth.getInstance();
         //mAuth.signOut();
         // getActivity().finish();
@@ -154,9 +153,8 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private static User queryForCurrentUser(String userId)
+    public static User queryForUser(String userId)
     {
-
         for(int i = 0; i < allUsers.size(); i++)
         {
             if(userId.equals(allUsers.get(i).getUid()))
@@ -172,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         FirebaseUser user = mAuth.getCurrentUser();
         final String userId = user.getUid();
 
-        return queryForCurrentUser(userId);
+        return queryForUser(userId);
     }
 
     public static ArrayList<User> getAllUsers()
@@ -180,16 +178,16 @@ public class MainActivity extends AppCompatActivity {
         return allUsers;
     }
 
-    protected void onCreateAux(Bundle savedInstanceState) {
+    private boolean userDoesNotExist(FirebaseUser user)
+    {
+        final String userId = user.getUid();
+        return (queryForUser(userId) == null);
+    }
 
+    protected void onCreateAux(Bundle savedInstanceState)
+    {
+        Log.i(TAG, "In onCreateAux");
         ma = this;
-
-        // Navbar
-        AppCompatDelegate.setDefaultNightMode(
-                AppCompatDelegate.MODE_NIGHT_AUTO);
-
-        setContentView(R.layout.activity_main);
-
         mAuth = FirebaseAuth.getInstance();
 
         FirebaseUser user = mAuth.getCurrentUser();
@@ -197,12 +195,22 @@ public class MainActivity extends AppCompatActivity {
         //If not logged in, go to log in activity
         if(user == null)
         {
+            Log.i(TAG, "Firebase user is null");
             Intent intent = new Intent(MainActivity.this, HealCityLoginActivity.class);
             startActivity(intent);
         }
+        //Firebase user exists, but corresponding user in database does not
+        else if(userDoesNotExist(user))
+        {
+            Log.i(TAG, "Database user is null");
+            mAuth.signOut();
+            HealCityLoginActivity.endEverything();
+        }
         else
         {
-            try {
+            try
+
+            {
                 HealCityLoginActivity.hcla.finish();
             }
             catch(NullPointerException npe)
@@ -210,6 +218,11 @@ public class MainActivity extends AppCompatActivity {
                 //Activity was already killed by android, no need to kill it.
             }
         }
+
+        AppCompatDelegate.setDefaultNightMode(
+                AppCompatDelegate.MODE_NIGHT_AUTO);
+
+        setContentView(R.layout.activity_main);
 
         setupViewPager();
 

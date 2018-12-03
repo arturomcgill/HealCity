@@ -19,9 +19,9 @@ public class User
     private ArrayList<String> goalsSet;
     private ArrayList<String> goalsMet;
     private ArrayList<Boolean> dailyGoals;
-    private HashMap<Date, Integer> dailyXP;
-    private HashMap<Date, Integer> dailyFruitsVeggies;
-    private HashMap<Date, Integer> dailySteps;
+    private HashMap<String, Integer> dailyXP;
+    private HashMap<String, Integer> dailyFruitsVeggies;
+    private HashMap<String, Integer> dailySteps;
     private int level;
     private int lifetimeVolunteering;
     private int lifetimePublicTransportation;
@@ -45,9 +45,9 @@ public class User
         for (int i = 0; i < 5; i++) {
             dailyGoals.add(false);
         }
-        dailyXP = new HashMap<Date, Integer>();
-        dailySteps = new HashMap<Date, Integer>();
-        dailyFruitsVeggies = new HashMap<Date, Integer>();
+        dailyXP = new HashMap<String, Integer>();
+        dailySteps = new HashMap<String, Integer>();
+        dailyFruitsVeggies = new HashMap<String, Integer>();
         firstName = "NoFirstName";
         lastName ="NoLastName";
         percentage = 0;
@@ -159,7 +159,7 @@ public class User
         {
             int sum = 0;
 
-            for(Map.Entry<Date, Integer> entry : dailySteps.entrySet())
+            for(Map.Entry<String, Integer> entry : dailySteps.entrySet())
             {
                 sum += entry.getValue();
             }
@@ -176,7 +176,7 @@ public class User
         {
             int sum = 0;
 
-            for(Map.Entry<Date, Integer> entry : dailyFruitsVeggies.entrySet())
+            for(Map.Entry<String, Integer> entry : dailyFruitsVeggies.entrySet())
             {
                 sum += entry.getValue();
             }
@@ -328,7 +328,7 @@ public class User
         {
             int sum = 0;
 
-            for(Map.Entry<Date, Integer> entry : dailyXP.entrySet())
+            for(Map.Entry<String, Integer> entry : dailyXP.entrySet())
             {
                 sum += entry.getValue();
             }
@@ -414,62 +414,77 @@ public class User
         this.goalsSet.add(goalSet);
     }
 
-    public HashMap<Date, Integer> getDailyXP()
+    public HashMap<String, Integer> getDailyXP()
     {
         return dailyXP;
     }
 
-    public void setDailyXP(HashMap<Date, Integer> dailyXP)
+    public void setDailyXP(HashMap<String, Integer> dailyXP)
     {
         this.dailyXP = dailyXP;
     }
 
     public void resetDailyXP()
     {
-        this.dailyXP = new HashMap<Date, Integer>();
+        this.dailyXP = new HashMap<String, Integer>();
     }
 
     public void addDailyXPToDate(Date date, int xp)
     {
+        this.dailyXP.put(date.toString(), xp);
+    }
+
+    public void addDailyXPToDate(String date, int xp)
+    {
         this.dailyXP.put(date, xp);
     }
 
-    public HashMap<Date, Integer> getDailySteps()
+    public HashMap<String, Integer> getDailySteps()
     {
         return dailySteps;
     }
 
-    public void setDailySteps(HashMap<Date, Integer> dailySteps)
+    public void setDailySteps(HashMap<String, Integer> dailySteps)
     {
         this.dailySteps = dailySteps;
     }
 
     public void resetDailySteps()
     {
-        this.dailySteps = new HashMap<Date, Integer>();
+        this.dailySteps = new HashMap<String, Integer>();
     }
 
     public void addDailystepsToDate(Date date, int steps)
     {
+        this.dailySteps.put(date.toString(), steps);
+    }
+
+    public void addDailystepsToDate(String date, int steps)
+    {
         this.dailySteps.put(date, steps);
     }
 
-    public HashMap<Date, Integer> getFruitsVeggies()
+    public HashMap<String, Integer> getFruitsVeggies()
     {
         return dailyFruitsVeggies;
     }
 
-    public void setFruitsVeggies(HashMap<Date, Integer> dailyFruitsVeggies)
+    public void setFruitsVeggies(HashMap<String, Integer> dailyFruitsVeggies)
     {
         this.dailyFruitsVeggies = dailyFruitsVeggies;
     }
 
     public void resetFruitsVeggies()
     {
-        this.dailyFruitsVeggies = new HashMap<Date, Integer>();
+        this.dailyFruitsVeggies = new HashMap<String, Integer>();
     }
 
-    public void resetFruitsVeggies(Date date, int steps)
+    public void setDailyFruitsVeggies(Date date, int steps)
+    {
+        this.dailyFruitsVeggies.put(date.toString(), steps);
+    }
+
+    public void setDailyFruitsVeggies(String date, int steps)
     {
         this.dailyFruitsVeggies.put(date, steps);
     }

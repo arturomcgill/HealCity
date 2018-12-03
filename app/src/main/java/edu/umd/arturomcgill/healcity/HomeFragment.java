@@ -155,8 +155,6 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         }
 
         currentUser = MainActivity.getCurrentUser();
-
-
     }
 
     @Override
@@ -206,7 +204,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
                 mRef.child("users").child(userId).setValue(currentUser);
                 mAuth.signOut();
                 Toast.makeText(getContext(), "Logging out.", Toast.LENGTH_SHORT).show();
-                MainActivity.ma.endEverything();
+                HealCityLoginActivity.endEverything();
             }
         });
 
