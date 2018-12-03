@@ -337,10 +337,10 @@ public class User
         }
     }
 
-    public Bitmap getProfilePhoto()
+  /*  public Bitmap getProfilePhoto()
     {
         return profilePhoto;
-    }
+    }*/
 
     public void setProfilePhoto(Bitmap photo)
     {

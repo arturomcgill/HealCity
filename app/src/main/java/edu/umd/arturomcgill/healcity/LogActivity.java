@@ -66,7 +66,7 @@ public class LogActivity extends Activity {
 
 
                     User user = MainActivity.getCurrentUser();
-                    HashMap<Date,Integer> dailyFruitsVeggies = user.getFruitsVeggies();
+                    HashMap<String,Integer> dailyFruitsVeggies = user.getFruitsVeggies();
                     SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                     Date today = null;
                     try {
@@ -76,10 +76,11 @@ public class LogActivity extends Activity {
                         e.printStackTrace();
                     }
                     if(today != null) {
-                        if (dailyFruitsVeggies.get(today) == null){
-                            dailyFruitsVeggies.put(today, result);
+                        if (dailyFruitsVeggies.get(today.toString()
+                        ) == null){
+                            dailyFruitsVeggies.put(today.toString(), result);
                         } else {
-                            dailyFruitsVeggies.put(today, dailyFruitsVeggies.get(today) + result);
+                            dailyFruitsVeggies.put(today.toString(), dailyFruitsVeggies.get(today) + result);
                         }
                     } else {
                         Log.i("HealCity", "Couldn't get date");

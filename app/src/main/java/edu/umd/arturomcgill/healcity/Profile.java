@@ -57,7 +57,7 @@ public class Profile extends Activity {
         name.setText(user.getFirstName() + " " + user.getLastName());
 
         ImageView profilePic = (ImageView)findViewById(R.id.profile_picture);
-        Bitmap userPic = user.getProfilePhoto();
+        Bitmap userPic = null;//user.getProfilePhoto();
 
         if(userPic == null){
             profilePic.setImageResource(R.drawable.ic_profile);
@@ -162,8 +162,8 @@ public class Profile extends Activity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
-        fruits.put(today, 50);
+        HashMap<String, Integer> fruits = new HashMap<String, Integer>();
+        fruits.put(today.toString(), 50);
         user.setFruitsVeggies(fruits);
         user.addlifetimeParks(10);
 
