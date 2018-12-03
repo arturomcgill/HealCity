@@ -52,10 +52,6 @@ public class HealCitySignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        Toast.makeText(HealCitySignUpActivity.this, "password requires at least 8 characters," +
-                        "a letter, a capital letter, and a number",
-                Toast.LENGTH_SHORT).show();
-
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
