@@ -35,14 +35,23 @@ public class Profile extends Activity {
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lifetime_achievements);
 
-//        if(getIntent().getStringExtra("currentUser") == "true"){
-//            Log.i("SARA", "HERE");
-//            user = MainActivity.getCurrentUser();
-//        } else {
-//            //TODO: the intent that creates this activity then should have two extras, one with tag "currentUser" that would be
-//            // set to false and another one that sends the email of the user that your trying to get
-//            // so from that email, set the user reference
-//        }
+        if(getIntent().getStringExtra("currentUser") == "true"){
+            Log.i("SARA", "HERE");
+            user = MainActivity.getCurrentUser();
+        } else {
+            //TODO: the intent that creates this activity then should have two extras, one with tag "currentUser" that would be
+            // set to false and another one that sends the email of the user that your trying to get
+            // so from that email, set the user reference
+            ArrayList<User> allUsers = MainActivity.getAllUsers();
+            String email = getIntent().getStringExtra("email");
+            for(int i = 0; i < allUsers.size(); i++){
+                if(allUsers.get(i).getEmail().equals(email)) {
+                    user = allUsers.get(i);
+                    break;
+                }
+            }
+
+        }
 
         TextView name = (TextView)findViewById(R.id.name);
         name.setText(user.getFirstName() + " " + user.getLastName());
@@ -156,7 +165,7 @@ public class Profile extends Activity {
         HashMap<Date, Integer> fruits = new HashMap<Date, Integer>();
         fruits.put(today, 50);
         user.setFruitsVeggies(fruits);
-        user.setlifetimeParks(10);
+        user.addlifetimeParks(10);
 
         ArrayList<String> achievements = new ArrayList<String>();
         achievements.add("10 fruits and veggies");

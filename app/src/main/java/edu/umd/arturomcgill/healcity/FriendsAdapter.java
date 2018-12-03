@@ -1,5 +1,6 @@
 package edu.umd.arturomcgill.healcity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.content.Context;
@@ -27,7 +28,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
     private ArrayList<String> friendsEmails;
     private ArrayList<User> friends = new ArrayList<>();
 
-    private Context context;
+    private static Context context;
     private  FragmentManager fragmentManager;
 
     public FriendsAdapter(Context context, FragmentManager fragmentManager, User currentUser) {
@@ -99,24 +100,30 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.SimpleIt
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    DialogFragment friendProfile = new FriendsProfileModal();
-                    Bundle friendInfo = new Bundle();
+//                    DialogFragment friendProfile = new FriendsProfileModal();
+//                    Bundle friendInfo = new Bundle();
 
                     String name = friend.getEmail();
-                    int level = friend.getLifetimeXP()/1000;
+//                    int level = friend.getLifetimeXP()/1000;
 
 
-                    friendInfo.putString("name", name);
-                    friendInfo.putInt("level", level);
-//                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
-                    //Just need name (or id) to do query of DB
-                    // TODO: OR send Friend object to fragment
+//                    friendInfo.putString("name", name);
+//                    friendInfo.putInt("level", level);
+////                    friendInfo.putStringArrayList("achievements", friend.getAchievements());
+//                    //Just need name (or id) to do query of DB
+//                    // TODO: OR send Friend object to fragment
+//
+//
+//                    friendProfile.setArguments(friendInfo);
+//
+//                    //TODO Change to user profile popup
+//                    friendProfile.show(fragmentManager, "friend");
 
-
-                    friendProfile.setArguments(friendInfo);
-
-                    //TODO Change to user profile popup
-                    friendProfile.show(fragmentManager, "friend");
+                    // TODO made context static for this, is that okay?
+                    Intent intent = new Intent(context, Profile.class);
+                    intent.putExtra("currentUser", "false");
+                    intent.putExtra("email", name);
+                    context.startActivity(intent);
                 }
             });
 

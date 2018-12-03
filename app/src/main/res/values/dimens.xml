@@ -5,9 +5,9 @@
     <dimen name="fab_margin">16dp</dimen>
 
 
-    <dimen name="standard_55">55dp</dimen>
-    <dimen name="standard_105">105dp</dimen>
-    <dimen name="standard_155">155dp</dimen>
+    <dimen name="standard_55">70dp</dimen>
+    <dimen name="standard_105">135dp</dimen>
+    <dimen name="standard_155">200dp</dimen>
 
     <dimen name="activity_margin_half">8dp</dimen>
 

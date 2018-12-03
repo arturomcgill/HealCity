@@ -243,11 +243,14 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         View content = rootView.findViewById(R.id.content);
 
 
-        FloatingActionButton fab = (FloatingActionButton) content.findViewById(R.id.fab);
-        fab1 = (FloatingActionButton) content.findViewById(R.id.fab1);
-        fab2 = (FloatingActionButton) content.findViewById(R.id.fab2);
-        fab3 = (FloatingActionButton) content.findViewById(R.id.fab3);
-        closeFABMenu();
+        rootView.bringToFront();
+        rootView.invalidate();
+
+        FloatingActionButton fab = (FloatingActionButton) rootView.findViewById(R.id.fab);
+        fab1 = (FloatingActionButton) rootView.findViewById(R.id.fab1);
+        fab2 = (FloatingActionButton) rootView.findViewById(R.id.fab2);
+        fab3 = (FloatingActionButton) rootView.findViewById(R.id.fab3);
+        //closeFABMenu();
         fab.setOnClickListener(new View.OnClickListener() {
 
 
@@ -358,16 +361,16 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
 
     private void showFABMenu(){
         isFABOpen=true;
-        fab1.animate().translationY(-getResources().getDimension(R.dimen.standard_55));
-        fab2.animate().translationY(-getResources().getDimension(R.dimen.standard_105));
-        fab3.animate().translationY(-getResources().getDimension(R.dimen.standard_155));
+        fab1.animate().translationX(-getResources().getDimension(R.dimen.standard_55));
+        fab2.animate().translationX(-getResources().getDimension(R.dimen.standard_105));
+        fab3.animate().translationX(-getResources().getDimension(R.dimen.standard_155));
     }
 
     private void closeFABMenu(){
         isFABOpen=false;
-        fab1.animate().translationY(0);
-        fab2.animate().translationY(0);
-        fab3.animate().translationY(0);
+        fab1.animate().translationX(0);
+        fab2.animate().translationX(0);
+        fab3.animate().translationX(0);
     }
 
     private void simulateProgress(int start, int end) {
