@@ -32,19 +32,19 @@ public class Profile extends Activity {
 
         setContentView(R.layout.fragment_profile);
 
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        String uid = firebaseUser.getUid();
-        int index = MainActivity.getAllUsers().indexOf(MainActivity.getCurrentUser());
-
-        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
-  //      MainActivity.getAllUsers().set(index, createTestUser());
+//        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+//        String uid = firebaseUser.getUid();
+//        int index = MainActivity.getAllUsers().indexOf(MainActivity.getCurrentUser());
+//
+//        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
+//  //      MainActivity.getAllUsers().set(index, createTestUser());
 
 
 
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lifetime_achievements);
 
-        if(getIntent().getStringExtra("currentUser") == "true"){
+        if(getIntent().getStringExtra("currentUser").equals("true")){
             Log.i("SARA", "HERE");
             user = MainActivity.getCurrentUser();
         } else {
