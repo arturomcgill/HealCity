@@ -1,8 +1,10 @@
 package edu.umd.arturomcgill.healcity;
 
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,8 +31,13 @@ import java.util.Date;
 public class NearbyFragment extends Fragment {
 
     public static final String TAG = NearbyFragment.class.getSimpleName();
-    public static final String eventURL = "https://www.eventbriteapi.com/v3/events/search/?location.address=CollegePark&token=74FTCKSNQEF2GVG6WR2T";
+    public static final String eventURL = "https://www.eventbriteapi.com/v3/events/search/?location.address=Hyattsville&expand=venue&sort_by=date&token=74FTCKSNQEF2GVG6WR2T";
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_COLOR = "color";
 
+    // TODO: Rename and change types of parameters
+    private int color;
     private RecyclerView mRecyclerView;
     private NearbyAdapter mAdapter;
 
@@ -41,7 +48,10 @@ public class NearbyFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        if (getArguments() != null) {
+            color = getArguments().getInt(ARG_COLOR);
+        }
+        Log.i(TAG, "Nearby Fragment created");
         EventAsyncTask task = new EventAsyncTask();
         task.execute();
     }
@@ -52,6 +62,7 @@ public class NearbyFragment extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_square, container, false);
         mRecyclerView = rootView.findViewById(R.id.fragment_square_recycler);
+        mRecyclerView.setBackgroundColor(getLighterColor(color));
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         mAdapter = new NearbyAdapter(getContext(), new ArrayList<Event>());
         mRecyclerView.setAdapter(mAdapter);
@@ -118,7 +129,6 @@ public class NearbyFragment extends Fragment {
 
                     JSONObject d = n.getJSONObject("description");
                     String description = d.getString("text");
-                    String descriptionSplit = description.substring(0, 150);
 
                     JSONObject localtime = n.getJSONObject("start");
                     String time = localtime.getString("local");
@@ -126,8 +136,13 @@ public class NearbyFragment extends Fragment {
                     Date date = format.parse(time);
                     format = new SimpleDateFormat("MMMM dd yyyy hh:mm aaa");
                     time = format.format(date);
+                    JSONObject venue = n.getJSONObject("venue");
+                    JSONObject address = venue.getJSONObject("address");
+                    double latitude = Double.parseDouble(address.getString("latitude"));
+                    double longitude = Double.parseDouble(address.getString("longitude"));
+                    String address1 = address.getString("localized_address_display");
 
-                    Event e = new Event(name, time, descriptionSplit);
+                    Event e = new Event(name, time, description, longitude, latitude, address1);
                     events.add(e);
                 }
 
@@ -147,5 +162,28 @@ public class NearbyFragment extends Fragment {
             mAdapter.update(eventArr);
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    /**
+     * Updates {@link RecyclerView} background color upon changing Bottom Navigation item.
+     *
+     * @param color to apply to {@link RecyclerView} background.
+     */
+    public void updateColor(int color) {
+        mRecyclerView.setBackgroundColor(getLighterColor(color));
+    }
+
+    /**
+     * Facade to return colors at 30% opacity.
+     *
+     * @param color
+     * @return
+     */
+    private int getLighterColor(int color) {
+        return Color.argb(30,
+                Color.red(color),
+                Color.green(color),
+                Color.blue(color)
+        );
     }
 }

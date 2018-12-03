@@ -16,6 +16,14 @@
         <item>Nougat</item>
     </string-array>
 
+    <string-array name="park_names">
+        <item>Heurich Park</item>
+        <item>Hyatt Park</item>
+        <item>Deitz Park</item>
+        <item>Centennial Park</item>
+        <item>Melrose Park</item>
+    </string-array>
+
     <string-array name="dessert_descriptions">
         <item>A small cake designed to serve one person, which may be baked in a small thin paper or aluminum cup. As with larger cakes, icing and other cake decorations, such as candy, may be applied.</item>
         <item>A type of fried dough confectionery or dessert food.</item>
