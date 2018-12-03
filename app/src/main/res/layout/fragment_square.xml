@@ -3,6 +3,7 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent"
              android:background="@color/bg_light"
+             android:id="@+id/fragment_square"
              tools:context="com.example.william.homepage.TemplateFragment">
 
     <!--By default, height of Toolbar and Bottom Navigation are equal-->
