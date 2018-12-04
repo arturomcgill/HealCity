@@ -37,7 +37,7 @@ public class Profile extends Activity {
 //        String uid = firebaseUser.getUid();
 //        int index = MainActivity.getAllUsers().indexOf(MainActivity.getCurrentUser());
 //
-//        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
+        Log.i("TEST", "AAAAAAAAAAAAAAAAAAAAA");
 //  //      MainActivity.getAllUsers().set(index, createTestUser());
 
 
