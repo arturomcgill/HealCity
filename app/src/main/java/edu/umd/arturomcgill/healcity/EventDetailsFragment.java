@@ -93,7 +93,15 @@ public class EventDetailsFragment extends Fragment {
                                 Log.d(TAG, "Same location");
                                 currentUser.addlifetimeVolunteering(2);
                                 Log.d(TAG, "Volunteering" + currentUser.getLifetimeVolunteering());
+
+
+
                                 int xp = 2 * 200;
+                                currentUser.setPercentage(currentUser.getPercentage() + xp % 100);
+                                HomeFragment.addProgress(currentUser.getPercentage());
+                                int level = xp/100;
+                                currentUser.setLevel(currentUser.getLevel() + level);
+
                                 SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
                                 Date today = null;
                                 try {

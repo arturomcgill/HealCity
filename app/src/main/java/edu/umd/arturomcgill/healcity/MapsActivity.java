@@ -35,6 +35,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.maps.android.ui.IconGenerator;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -201,6 +203,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     if (currentLatLng.equals(parkList.get(i))) {
                         User user = MainActivity.getCurrentUser();
                         user.addLifetimeParks(1);
+                        int xp = 50;
+                        user.setPercentage(user.getPercentage() + xp % 100);
+                        HomeFragment.addProgress(user.getPercentage());
+                        int level = xp/100;
+                        user.setLevel(user.getLevel() + level);
+
+                        SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+                        Date today = null;
+                        try {
+                            String string = format.format(new Date());
+                            today = format.parse(string);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        user.addPoints(xp);
+                        user.addDailyXPToDate(today, xp);
+
+                        if(user.getLifetimeParks() == 1) {
+                            user.addLifetimeAchievement("1 park");
+                        } else if (user.getLifetimeParks() == 10) {
+                            user.addLifetimeAchievement("10 parks");
+                        } else if (user.getLifetimeParks() == 50) {
+                            user.addLifetimeAchievement("50 parks");
+                        }
                         Toast.makeText(getApplicationContext(), "You just went to a park!", Toast.LENGTH_SHORT).show();
                     } else {
                         Toast.makeText(getApplicationContext(), "You're not at this park.", Toast.LENGTH_SHORT).show();
@@ -294,7 +321,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
             // other 'case' lines to check for other permissions this app might request.
-            // You can add here other case statements according to your requirement.
+            // You can add here other case statements accordifng to your requirement.
         }
 
     }
