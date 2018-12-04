@@ -143,7 +143,7 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
 
     public static void addProgress(int i) {
         int progress = mCustomProgressBar5.getProgress();
-        mCustomProgressBar5.setProgress(progress + 10);
+        mCustomProgressBar5.setProgress(progress + i);
     }
 
     @Override
@@ -493,7 +493,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
         }
 
         if (mCustomProgressBar5.getProgress() >= 100 && this.isVisible()) {
-            currentUser.setLevel(currentUser.getLevel() + 1);
+            int rounds = currentUser.getPercentage() / 100;
+            currentUser.setLevel(currentUser.getLevel() + rounds);
             final Toast toast = Toast.makeText(getActivity(), "Leveled up to level " + currentUser.getLevel(), Toast.LENGTH_SHORT);
             toast.show();
 
@@ -504,8 +505,8 @@ public class HomeFragment extends Fragment implements SensorEventListener, Googl
                     toast.cancel();
                 }
             }, 1500);
-            mCustomProgressBar5.setProgress(currentUser.getPercentage() - 100);
-            currentUser.setPercentage(currentUser.getPercentage() - 100);
+            mCustomProgressBar5.setProgress(currentUser.getPercentage() % 100);
+            currentUser.setPercentage(currentUser.getPercentage() % 100);
         }
     }
 
