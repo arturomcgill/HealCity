@@ -75,12 +75,14 @@ public class MainActivity extends AppCompatActivity {
             DatabaseReference mRef = FirebaseDatabase.getInstance().getReference();
             //   mRef.child("users").child(userId).setValue(currentUser);
 
-            mRef.removeValue();
-            for (int i = 0; i < allUsers.size(); i++) {
-                //Update db
-                User u = allUsers.get(i);
-                mRef.child("users").child(u.getUid()).setValue(u);
-            }
+            mRef.child("users").child(getCurrentUser().getUid()).setValue(getCurrentUser());
+
+//            mRef.removeValue();
+//            for (int i = 0; i < allUsers.size(); i++) {
+//                //Update db
+//                User u = allUsers.get(i);
+//                mRef.child("users").child(u.getUid()).setValue(u);
+//            }
         }
     }
 
