@@ -42,6 +42,8 @@ public class Profile extends Activity {
 
 
 
+        user = createTestUser();
+
         LinearLayout linearLayout = (LinearLayout) findViewById(R.id.lifetime_achievements);
 
         if(getIntent().getStringExtra("currentUser").equals("true")){

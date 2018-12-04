@@ -98,7 +98,7 @@ public class LogActivity extends Activity {
                         if (dailyFruitsVeggies.get(today.toString()) == null){
                             dailyFruitsVeggies.put(today.toString(), result);
                         } else {
-                            dailyFruitsVeggies.put(today.toString(), dailyFruitsVeggies.get(today) + result);
+                            dailyFruitsVeggies.put(today.toString(), dailyFruitsVeggies.get(today.toString()) + result);
                         }
                     } else {
                         Log.i("HealCity", "Couldn't get date");
