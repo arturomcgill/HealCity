@@ -44,7 +44,6 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
         // UI changes in item holders
 
 
-
         getShopItems();
     }
 
@@ -85,7 +84,11 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
         if (currentUser.getUpgradesPurchased().contains(shopItem.getName())) {
             holder.buy.setText("Purchased");
             holder.buy.setClickable(false);
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.holo_red_light));
+        } else {
+            holder.buy.setBackgroundColor(context.getResources().getColor(R.color.holo_green_light));
         }
+
 
     }
 
@@ -96,7 +99,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
 
     protected class SimpleItemVH extends RecyclerView.ViewHolder {
         ShopItem item;
-        User currentUser;
+//        User currentUser;
 
         TextView name;
         TextView cost;
@@ -109,14 +112,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
         public SimpleItemVH(View itemView, final User currentUser) {
             super(itemView);
 
-            this.currentUser = currentUser;
-
             name = (TextView) itemView.findViewById(R.id.shop_item_name);
             cost = (TextView) itemView.findViewById(R.id.shop_item_cost);
             description = (TextView) itemView.findViewById(R.id.shop_item_description);
             img = itemView.findViewById(R.id.shop_item_img);
 
             buy = itemView.findViewById(R.id.buy);
+
 
             userPoints = rootView.findViewById(R.id.userPoints);
 
@@ -130,9 +132,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.SimpleItemVH> 
                         currentUser.addUpgradesPurchased(item.getName());
                         userPoints.setText("Points: " + currentUser.getPoints());
 
+                        Log.i(TAG, "USER POINTS SHOP: " + currentUser.getPoints());
+
                         buy.setText("Purchased");
                         buy.setClickable(false);
-                        buy.setBackgroundColor(Color.parseColor("#ff516a"));
+                        buy.setBackgroundColor(context.getResources().getColor(R.color.holo_red_light));
+                        Log.i(TAG, "PURCHASING");
+
                     }
                 }
             });

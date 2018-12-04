@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+
+import static edu.umd.arturomcgill.healcity.ShopFragment.TAG;
 
 public class FriendsFragment extends Fragment {
 
@@ -92,8 +95,22 @@ public class FriendsFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
 
-        Button addFriend = rootView.findViewById(R.id.addFriend);
+        final Button addFriend = rootView.findViewById(R.id.addFriend);
         final TextView friendSearch = rootView.findViewById(R.id.searchFriend);
+
+        friendSearch.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int keyCode, KeyEvent keyEvent) {
+                if ((keyEvent.getAction() == KeyEvent.ACTION_DOWN) &&
+                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+                    // Perform action on key press
+                    addFriend.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
+//        Log.i(TAG, "USER POINTS SHOP: " + currentUser.getPoints());
 
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,11 +137,6 @@ public class FriendsFragment extends Fragment {
 
             }
         });
-
-
-
-
-
 
         return rootView;
     }

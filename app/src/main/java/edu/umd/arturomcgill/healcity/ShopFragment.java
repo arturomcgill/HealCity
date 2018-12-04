@@ -45,11 +45,14 @@ public class ShopFragment extends Fragment {
         }
 
         currentUser = MainActivity.getCurrentUser();
+//        currentUser.addPoints(5000);
 
-        currentUser.setPoints(7000);
-        currentUser.resetUpgradesPurchased();
-//        currentUser.addUpgradesPurchased("Remove Ads");
+        Log.i(TAG, "USER: POINTS: " + currentUser.getPoints() + " NAME: " + currentUser.getFirstName());
 
+        fillShop();
+    }
+
+    private void fillShop() {
         allItems.put("Remove Ads", new ShopItem("Remove Ads", R.drawable.remove_ads, 10000, "Remove Ads"));
         allItems.put("$10 Zipcar Credit", new ShopItem("$10 Zipcar Credit", R.drawable.zipcar, 7500, "$10 Zipcar Credit"));
         allItems.put("$5 Metro Credit", new ShopItem("$5 Metro Credit", R.drawable.metro_card, 5000, "$5 Metro Credit"));
@@ -62,6 +65,7 @@ public class ShopFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.shop_ui, container, false);
 
         recyclerView = (RecyclerView) rootView.findViewById(R.id.shop_list);
